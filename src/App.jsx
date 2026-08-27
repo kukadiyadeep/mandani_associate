@@ -324,7 +324,7 @@ export default function App() {
     setApplications(prev => prev.map(a => a.id === id ? { ...a, status } : a));
 
   return (
-    <div className="font-body min-h-screen bg-white text-slate-700" style={{ "--navy": NAVY }}>
+    <div className="font-body min-h-screen bg-white text-slate-700 overflow-x-hidden" style={{ "--navy": NAVY }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap');
         .font-display{ font-family:'Fraunces', Georgia, serif; }
@@ -488,7 +488,7 @@ function FloatingContactBar() {
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`${isOpen ? 'bg-slate-900 shadow-inner' : 'bg-[#0B1F3A] shadow-2xl'} w-11 h-11 rounded-full flex items-center justify-center text-white hover:scale-110 active:scale-95 transition-all relative border-4 border-white/10`}
+        className={`${isOpen ? 'bg-slate-900 shadow-inner' : 'bg-[#0B1F3A] shadow-2xl'} w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white hover:scale-110 active:scale-95 transition-all relative border-4 border-white/10`}
       >
         {isOpen ? <X size={20} /> : <MessageCircle size={20} fill="currentColor" />}
         {!isOpen && (
@@ -646,8 +646,8 @@ function ScrollReveal({
         }
       },
       {
-        threshold: 0.15,
-        rootMargin: "0px 0px -80px 0px"
+        threshold: 0.05,
+        rootMargin: "0px 0px -20px 0px"
       }
     );
 
@@ -1219,7 +1219,7 @@ function LoanCategoriesSection({ startApplication }) {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!sectionRef.current || !containerRef.current) return;
+      if (!sectionRef.current || !containerRef.current || window.innerWidth < 1024) return;
       const section = sectionRef.current;
       const container = containerRef.current;
 
@@ -1234,7 +1234,6 @@ function LoanCategoriesSection({ startApplication }) {
         const progress = scrollOffset / scrollRange;
         const totalWidth = container.scrollWidth;
         const viewportWidth = window.innerWidth;
-        // Adjusted maxTranslate to ensure the last card stops perfectly
         const maxTranslate = Math.max(0, totalWidth - viewportWidth + 80);
         container.style.transform = `translateX(${-progress * maxTranslate}px)`;
       } else if (scrollOffset < 0) {
@@ -1247,10 +1246,10 @@ function LoanCategoriesSection({ startApplication }) {
   }, []);
 
   return (
-    <section ref={sectionRef} id="loans" className="relative h-[450vh] bg-white overflow-visible pb-32 pt-40">
-      {/* Refined sticky container to ensure full card visibility */}
-      <div className="sticky top-[120px] h-[calc(100vh-120px)] flex flex-col justify-center overflow-visible">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 w-full mb-6 sm:mb-10 shrink-0 relative z-20">
+    <section ref={sectionRef} id="loans" className="relative lg:h-[450vh] bg-white overflow-visible py-20 lg:py-40">
+      {/* Sticky container for horizontal scroll on Desktop, normal flow on Mobile */}
+      <div className="lg:sticky lg:top-[120px] lg:h-[calc(100vh-120px)] flex flex-col justify-center overflow-visible">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 w-full mb-10 lg:mb-10 shrink-0 relative z-20">
           <div className="flex flex-col items-center text-center">
             <span className="inline-block px-4 py-1.5 rounded-full text-[11px] font-bold tracking-[0.2em] text-amber-600 bg-amber-50 uppercase mb-2">
               Our Financial Solutions
@@ -1262,46 +1261,47 @@ function LoanCategoriesSection({ startApplication }) {
           </div>
         </div>
 
+        {/* Mobile: Grid | Desktop: Horizontal Scroll */}
         <div
           ref={containerRef}
-          className="flex gap-6 sm:gap-10 px-6 lg:px-20 transition-transform duration-150 ease-out will-change-transform w-max pb-20 items-stretch overflow-visible"
+          className="grid grid-cols-1 md:grid-cols-2 lg:flex gap-6 lg:gap-10 px-6 lg:px-20 lg:transition-transform lg:duration-150 lg:ease-out lg:will-change-transform lg:w-max pb-10 lg:pb-20 items-stretch overflow-visible"
         >
           {LOAN_CATEGORIES.map((cat) => {
             const Icon = cat.icon;
             return (
               <div
                 key={cat.id}
-                className="group relative bg-white/70 backdrop-blur-sm rounded-[2.5rem] border-2 border-slate-200/80 p-5 sm:p-7 transition-all duration-500 hover:shadow-[0_40px_80px_-15px_rgba(11,31,58,0.15)] hover:-translate-y-2 hover:border-amber-500/40 overflow-hidden flex flex-col shadow-xl shadow-slate-200/10 w-[250px] sm:w-[320px] flex-shrink-0"
+                className="group relative bg-white/70 backdrop-blur-sm rounded-[2.5rem] border-2 border-slate-200/80 p-6 sm:p-7 transition-all duration-500 hover:shadow-[0_40px_80px_-15px_rgba(11,31,58,0.15)] hover:-translate-y-2 hover:border-amber-500/40 overflow-hidden flex flex-col shadow-xl shadow-slate-200/10 w-full lg:w-[320px] flex-shrink-0"
               >
                 <div className="absolute -top-12 -right-12 w-32 h-32 bg-slate-50 rounded-full transition-all duration-500 group-hover:scale-[2.5] group-hover:bg-amber-50/50 -z-0" />
 
                 <div className="relative z-10 flex flex-col h-full">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center mb-3 transition-all duration-500 bg-slate-50 group-hover:bg-amber-500 group-hover:shadow-lg group-hover:shadow-amber-500/30">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center mb-4 transition-all duration-500 bg-slate-50 group-hover:bg-amber-500 group-hover:shadow-lg group-hover:shadow-amber-500/30">
                     <Icon size={24} className="text-slate-700 transition-colors duration-500 group-hover:text-white sm:w-7 sm:h-7" />
                   </div>
 
-                  <h3 className="font-display text-lg sm:text-xl lg:text-2xl font-bold mb-1 transition-colors duration-500 group-hover:text-amber-700" style={{ color: NAVY }}>
+                  <h3 className="font-display text-xl lg:text-2xl font-bold mb-1 transition-colors duration-500 group-hover:text-amber-700" style={{ color: NAVY }}>
                     {cat.name}
                   </h3>
 
-                  <div className="inline-flex items-center px-3 py-1 rounded-lg bg-amber-50 text-amber-700 text-[9px] sm:text-xs font-bold mb-3 w-fit">
+                  <div className="inline-flex items-center px-3 py-1 rounded-lg bg-amber-50 text-amber-700 text-xs font-bold mb-4 w-fit">
                     Starts from {cat.rate.split('–')[0]}
                   </div>
 
-                  <ul className="space-y-2 sm:space-y-3 mb-5 flex-grow">
+                  <ul className="space-y-3 mb-6 flex-grow">
                     {cat.points.map(p => (
                       <li key={p} className="flex items-start gap-3 text-slate-500 group-hover:text-slate-600 transition-colors">
                         <div className="mt-1 w-4 h-4 rounded-full bg-amber-50 flex items-center justify-center flex-shrink-0 group-hover:bg-amber-100 transition-colors">
                           <Check size={10} className="text-amber-600" />
                         </div>
-                        <span className="text-xs sm:text-sm lg:text-[15px] leading-snug">{p}</span>
+                        <span className="text-sm lg:text-[15px] leading-snug">{p}</span>
                       </li>
                     ))}
                   </ul>
 
                   <button
                     onClick={() => startApplication(cat.name)}
-                    className="w-full inline-flex items-center justify-center gap-2 py-3 sm:py-4 rounded-2xl font-bold text-xs sm:text-sm transition-all duration-300 bg-slate-50 text-slate-700 hover:bg-[#0B1F3A] hover:text-white hover:shadow-xl mt-auto"
+                    className="w-full inline-flex items-center justify-center gap-2 py-4 rounded-2xl font-bold text-sm transition-all duration-300 bg-slate-50 text-slate-700 hover:bg-[#0B1F3A] hover:text-white hover:shadow-xl mt-auto"
                   >
                     Apply Now <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
                   </button>
@@ -1309,7 +1309,8 @@ function LoanCategoriesSection({ startApplication }) {
               </div>
             );
           })}
-          <div className="w-[10vw] flex-shrink-0" />
+          {/* Spacing element for desktop scroll end */}
+          <div className="hidden lg:block w-[10vw] flex-shrink-0" />
         </div>
       </div>
     </section>
