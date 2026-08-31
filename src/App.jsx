@@ -34,24 +34,31 @@ const fmtINR = (n) => {
 /* ------------------------------- Mock data -------------------------------- */
 const LOAN_CATEGORIES = [
   { id: "home", name: "Home Loan", icon: HomeIcon, rate: "7% – 10%",
+    img: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=80",
     points: ["Home purchase", "Home construction", "Home renovation"],
     eligibility: ["Age: 21-65 years", "Salaried/Self-employed", "Min. income: ₹25k/mo", "Stable work history"] },
   { id: "machinery", name: "Machinery Loan", icon: Settings, rate: "7% – 13%",
+    img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80",
     points: ["Industrial equipment", "Medical machinery", "Manufacturing tools"],
     eligibility: ["Business age: 3+ years", "Profitable for last 2 yrs", "Good credit score", "MSME registration preferred"] },
   { id: "business", name: "Business Loan", icon: Briefcase, rate: "8% – 17%",
+    img: "buissness.png",
     points: ["Business expansion", "Working capital", "Equipment financing"],
     eligibility: ["Min. turnover: ₹20L", "Business age: 2+ years", "ITR for last 2 yrs", "Office ownership proof"] },
   { id: "lap", name: "Mortgage Loan / Loan Against Property", icon: Building2, rate: "7.5% – 14%",
+    img: "morgage.png",
     points: ["Property-backed financing", "Business/personal requirements"],
     eligibility: ["Ownership of property", "Clear property titles", "Age: 21-70 years", "Repayment capacity"] },
   { id: "personal", name: "CC / OD", icon: Wallet, rate: "7.5% – 15%",
+       img: "https://images.unsplash.com/photo-1589758438368-0ad531db3366?auto=format&fit=crop&w=800&q=80",
     points: [  "Working capital facility","Flexible cash withdrawal","Business cash-flow support"],
     eligibility: ["Business age: 2+ years", "GST registration", "Regular bank conduct", "Min. turnover criteria"] },
   { id: "education", name: "Education Loan", icon: GraduationCap, rate: "6% – 10%",
+      img:"edu.jpg",
     points: ["Higher education", "Domestic & international studies"],
     eligibility: ["Indian nationality", "Confirmed admission", "Co-applicant required", "Valid course details"] },
 ];
+
 
 const PROVIDERS = [
   { id: 1, name: "Apex Finance", type: "CC / OD", rate: 10.5, maxAmount: "₹25,00,000", tenure: "1 – 5 yrs", fee: "Up to 2%" },
@@ -135,10 +142,10 @@ const BANK_PARTNERS = [
   // Private Banks
   { name: "HDFC Bank", color: "#1C3F94", bg: "#F0F4FF", type: "Private Banks", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/HDFC_Bank_Logo.svg/1280px-HDFC_Bank_Logo.svg.png" },
   { name: "ICICI Bank", color: "#F58220", bg: "#FFF7ED", type: "Private Banks", logo: "https://www.kindpng.com/picc/m/328-3281737_icici-bank-logo-png-transparent-png.png"},
-  { name: "Axis Bank", color: "#97144D", bg: "#FDF2F7", type: "Private Banks", logo: "https://www.pngkey.com/png/detail/241-2413596_axis-bank-logo-png.png?utm_source=chatgpt.com" },
+  { name: "Axis Bank", color: "#97144D", bg: "#FDF2F7", type: "Private Banks", logo: "axisbank.png" },
   { name: "Kotak Bank", color: "#EE1C25", bg: "#FEF2F2", type: "Private Banks", logo: "/kotak.png"},
   { name: "IDFC First", color: "#922724", bg: "#FDF2F2", type: "Private Banks", logo: "/idfc.png" },
-  { name: "Yes Bank", color: "#005EB8", bg: "#EFF6FF", type: "Private Banks", logo: "https://www.pngkey.com/png/detail/88-884312_file-yesbanklogo-yes-bank.png" },
+  { name: "Yes Bank", color: "#005EB8", bg: "#EFF6FF", type: "Private Banks", logo: "yes.png" },
   { name: "RBL Bank", color: "#005596", bg: "#F0F6FB", type: "Private Banks", logo: "https://www.pngkit.com/png/detail/223-2238067_rbl-bank-logo-png.png" },
   { name: "Bandhan Bank", color: "#0072BB", bg: "#F0F7FF", type: "Private Banks", logo: "/download.png" },
   { name: "IndusInd Bank", color: "#741618", bg: "#FDF2F2", type: "Private Banks", logo: "/indusald.png" },
@@ -253,7 +260,7 @@ function DisclaimerNote({ children, compact }) {
 function PrimaryButton({ children, onClick, className = "", type = "button", full, disabled }) {
   return (
     <button type={type} onClick={onClick} disabled={disabled}
-      className={`${full ? "w-full" : ""} inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-white transition-transform duration-150 hover:-translate-y-0.5 active:translate-y-0 ${className} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+      className={`${full ? "w-full" : ""} inline-flex items-center justify-center gap-2 px-6 py-2 rounded-xl font-semibold text-white transition-transform duration-150 hover:-translate-y-0.5 active:translate-y-0 ${className} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       style={{ backgroundColor: TEAL, boxShadow: "0 8px 20px -8px rgba(14,154,135,0.55)" }}
       onMouseEnter={e => e.currentTarget.style.backgroundColor = TEAL_DARK}
       onMouseLeave={e => e.currentTarget.style.backgroundColor = TEAL}>
@@ -265,7 +272,7 @@ function PrimaryButton({ children, onClick, className = "", type = "button", ful
 function GhostButton({ children, onClick, className = "" }) {
   return (
     <button onClick={onClick}
-      className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold border-2 transition-colors duration-150 ${className}`}
+      className={`inline-flex items-center justify-center gap-2 px-6 py-2 rounded-xl font-semibold border-2 transition-colors duration-150 ${className}`}
       style={{ borderColor: NAVY, color: NAVY }}
       onMouseEnter={e => { e.currentTarget.style.backgroundColor = NAVY; e.currentTarget.style.color = "#fff"; }}
       onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = NAVY; }}>
@@ -324,7 +331,7 @@ export default function App() {
     setApplications(prev => prev.map(a => a.id === id ? { ...a, status } : a));
 
   return (
-    <div className="font-body min-h-screen bg-white text-slate-700" style={{ "--navy": NAVY }}>
+    <div className="font-body min-h-screen bg-white text-slate-700 " style={{ "--navy": NAVY }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap');
         .font-display{ font-family:'Fraunces', Georgia, serif; }
@@ -353,7 +360,7 @@ export default function App() {
 
         .scroll-left {
           opacity: 0;
-          transform: translateX(-100px);
+          transform: translateX(-30px);
           transition:
             opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
             transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
@@ -367,7 +374,7 @@ export default function App() {
 
         .scroll-right {
           opacity: 0;
-          transform: translateX(100px);
+          transform: translateX(30px);
           transition:
             opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
             transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
@@ -526,14 +533,14 @@ function Header({ scrolled, view, navTo, goHomeAndScroll, startApplication, mobi
   ];
 
   return (
-    <header className={`relative z-50 transition-all duration-300 border-b ${scrolled ? 'bg-[#0B1F3A]/95 border-white/10' : 'bg-[#0B1F3A]/80 backdrop-blur-lg border-white/20'}`}>
+    <header className={`relative z-50 transition-all duration-300 border-b ${scrolled ? 'bg-transparent border-white/35' : 'bg-white/5 backdrop-blur-lg border-white/40'}`}>
       <div className="px-6 lg:px-10 h-20 flex items-center justify-between max-w-[1440px] mx-auto">
         <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); navTo("home"); }} className="flex items-center gap-4 group">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white rounded-full flex items-center justify-center shadow-2xl border border-white/20 overflow-hidden">
+          <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-2xl border border-white/20">
             <img
               src="/mandanilogo.png"
               alt="MANDANI"
-              className="w-full h-full object-contain p-1.5"
+              className="w-20 h-20 object-contain p-1"
               onError={(e) => {
                 e.target.style.display = 'none';
                 e.target.nextSibling.style.display = 'flex';
@@ -545,10 +552,10 @@ function Header({ scrolled, view, navTo, goHomeAndScroll, startApplication, mobi
             </div>
           </div>
           <div className="text-left">
-            <h1 className="block font-display font-bold text-xl sm:text-2xl tracking-tight leading-none" style={{ color: GOLD_LIGHT }}>
+            <h1 className="block font-display font-bold text-2xl tracking-tight leading-none" style={{ color: GOLD_LIGHT }}>
               MANDANI
             </h1>
-            <p className="block text-[8px] sm:text-[10px] font-black tracking-[0.28em] uppercase mt-1 text-white">
+            <p className="block text-[10px] font-black tracking-[0.28em] uppercase mt-1 text-white">
               Associate
             </p>
          </div>
@@ -558,7 +565,8 @@ function Header({ scrolled, view, navTo, goHomeAndScroll, startApplication, mobi
             <button
               key={l.id}
               onClick={l.action}
-              className={`px-4 py-2 text-sm font-bold transition-all rounded-xl ${view === l.id ? 'bg-white/10 text-[#E2C16B]' : 'hover:bg-white/5 text-white'}`}
+              className={`px-4 py-2 text-sm font-bold transition-all rounded-xl ${view === l.id ? 'bg-white/5' : 'hover:bg-white/5 text-white'}`}
+              style={{ color: view === l.id ? GOLD_LIGHT : 'white' }}
             >
               {l.label}
             </button>
@@ -570,7 +578,8 @@ function Header({ scrolled, view, navTo, goHomeAndScroll, startApplication, mobi
             <button
               key={l.id}
               onClick={l.action}
-              className={`px-4 py-2 text-sm font-bold transition-all rounded-xl ${view === l.id ? 'bg-white/10 text-[#E2C16B]' : 'hover:bg-white/5 text-white'}`}
+              className={`px-4 py-2 text-sm font-bold transition-all rounded-xl ${view === l.id ? 'bg-white/5' : 'hover:bg-white/5 text-white'}`}
+              style={{ color: view === l.id ? GOLD_LIGHT : 'white' }}
             >
               {l.label}
             </button>
@@ -580,7 +589,7 @@ function Header({ scrolled, view, navTo, goHomeAndScroll, startApplication, mobi
         <div className="hidden lg:flex items-center gap-4">
           <button
             onClick={() => startApplication(null)}
-            className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-bold text-white transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl shadow-amber-500/50"
+            className="inline-flex items-center justify-center gap-2 px-8 py-2.5 rounded-xl font-bold text-white transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl shadow-amber-500/50"
             style={{ backgroundColor: GOLD_LIGHT }}
             onMouseEnter={e => e.currentTarget.style.backgroundColor = GOLD_DARK}
             onMouseLeave={e => e.currentTarget.style.backgroundColor = GOLD_LIGHT}
@@ -633,9 +642,9 @@ function ScrollReveal({
 
   useEffect(() => {
     const element = ref.current;
+
     if (!element) return;
 
-    // Use a very low threshold and no negative margin to ensure it triggers on mobile/short screens
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -644,12 +653,13 @@ function ScrollReveal({
         }
       },
       {
-        threshold: 0.01,
-        rootMargin: "0px"
+        threshold: 0.15,
+        rootMargin: "0px 0px -80px 0px"
       }
     );
 
     observer.observe(element);
+
     return () => observer.disconnect();
   }, []);
 
@@ -676,60 +686,98 @@ function ScrollReveal({
 function HomeView({ navTo, startApplication, goHomeAndScroll }) {
   return (
     <>
-      <ScrollReveal direction="up">
-        <Hero
-          navTo={navTo}
-          goHomeAndScroll={goHomeAndScroll}
-        />
-      </ScrollReveal>
+      <Hero
+        navTo={navTo}
+        goHomeAndScroll={goHomeAndScroll}
+      />
 
-      <ScrollReveal direction="left">
-        <BankPartnersSection />
-      </ScrollReveal>
+      <AboutTeaserSection goHomeAndScroll={goHomeAndScroll} />
 
-      {/* KEEP EXISTING HORIZONTAL SCROLL */}
+      <BankPartnersSection />
+
       <LoanCategoriesSection
         startApplication={startApplication}
       />
 
-      <ScrollReveal direction="right">
-        <HappyCustomersSection />
-      </ScrollReveal>
+      <HappyCustomersSection />
 
-      <ScrollReveal direction="left">
-        <ProcessingStrengthSection
-          goHomeAndScroll={goHomeAndScroll}
-        />
-      </ScrollReveal>
+      <ProcessingStrengthSection
+        goHomeAndScroll={goHomeAndScroll}
+      />
 
-      <ScrollReveal direction="right">
-        <WhyChooseUsSection
-          goHomeAndScroll={goHomeAndScroll}
-        />
-      </ScrollReveal>
+      <WhyChooseUsSection
+        goHomeAndScroll={goHomeAndScroll}
+      />
 
-      <ScrollReveal direction="left">
-        <EMITeaserStrip navTo={navTo} />
-      </ScrollReveal>
+      <EMITeaserStrip navTo={navTo} />
 
-      <ScrollReveal direction="right">
-        <HowItWorksSection />
-      </ScrollReveal>
+      <HowItWorksSection />
 
-      <ScrollReveal direction="left">
-        <FAQSection />
-      </ScrollReveal>
+      <FAQSection />
 
-      <ScrollReveal direction="right">
-        <ContactSection />
-      </ScrollReveal>
+      <ContactSection />
 
-      <ScrollReveal direction="up">
-        <MapSection />
-      </ScrollReveal>
+      <MapSection />
     </>
   );
 }
+function AboutTeaserSection({ goHomeAndScroll }) {
+  const cards = [
+    { icon: Shield, title: "Quality Services", text: "Extraordinary, reliable, friendly services up to your expectations." },
+    { icon: Zap, title: "Valuable Inputs", text: "We will provide you with valuable guidance and financial ideas." },
+    { icon: Scale, title: "Committed", text: "We are committed to achieving your desired financial goal." },
+    { icon: HeartHandshake, title: "Assistance", text: "We will be standing beside you throughout the whole process." },
+  ];
+
+  return (
+    <section className="relative pt-10 pb-20 bg-white">
+      {/* Background Image Container */}
+      <div className="relative h-[250px] sm:h-[350px] w-full overflow-hidden mb-[-100px] sm:mb-[-150px]">
+        <img
+          src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=80"
+          alt="Office Background"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-slate-900/30" />
+
+        <div className="absolute top-1/2 left-0 w-full max-w-[1100px] px-6 lg:px-10 -translate-y-1/2">
+          <ScrollReveal direction="left" delay={0.2}>
+            <button
+              onClick={() => goHomeAndScroll("contact")}
+              className="bg-[#E2C16B] text-[#0B1F3A] font-bold px-8 py-2.5 rounded-md shadow-xl hover:bg-[#B8862C] transition-colors uppercase tracking-widest text-sm ml-4 sm:ml-10"
+            >
+              Get A Quote
+            </button>
+          </ScrollReveal>
+        </div>
+      </div>
+
+      {/* Overlapping Cards */}
+      <div className="relative z-10 max-w-[1100px] mx-auto px-6 lg:px-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {cards.map((c, i) => (
+            <ScrollReveal key={i} direction={i % 2 === 0 ? "left" : "right"} delay={i * 0.05}>
+              <div className="bg-white p-8 shadow-2xl border-t-4 border-[#E2C16B] flex flex-col items-center text-center group hover:-translate-y-2 transition-transform duration-300 h-full">
+                <div className="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center mb-6 text-[#E2C16B] group-hover:bg-[#E2C16B] group-hover:text-white transition-colors duration-300">
+                  <c.icon size={24} />
+                </div>
+                <h3 className="text-lg font-bold text-[#0B1F3A] mb-4">{c.title}</h3>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  {c.text}
+                </p>
+              </div>
+            </ScrollReveal>
+          ))}
+        </div>
+
+        <div className="mt-12 text-left">
+          <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">About Us</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function MapSection() {
   return (
     <section className="relative h-[550px] w-full overflow-hidden bg-slate-100">
@@ -930,12 +978,14 @@ function ProcessingStrengthSection({ goHomeAndScroll }) {
 
             <div className="grid sm:grid-cols-2 gap-4 mb-12">
               {features.map((f, i) => (
-                <div key={f} className="flex items-center gap-4 p-5 bg-slate-50/80 rounded-2xl border border-slate-100/50 text-left hover:bg-white hover:shadow-xl transition-all duration-300 group">
-                  <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-amber-500 shadow-sm border border-slate-50 group-hover:bg-amber-500 group-hover:text-white transition-all duration-300">
-                    <CheckCircle2 size={20} />
+                <ScrollReveal key={f} direction={i % 2 === 0 ? "left" : "right"} delay={i * 0.03}>
+                  <div className="flex items-center gap-4 p-5 bg-slate-50/80 rounded-2xl border border-slate-100/50 text-left hover:bg-white hover:shadow-xl transition-all duration-300 group h-full">
+                    <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-amber-500 shadow-sm border border-slate-50 group-hover:bg-amber-500 group-hover:text-white transition-all duration-300">
+                      <CheckCircle2 size={20} />
+                    </div>
+                    <span className="text-[15px] font-bold text-slate-700 leading-tight">{f}</span>
                   </div>
-                  <span className="text-[15px] font-bold text-slate-700 leading-tight">{f}</span>
-                </div>
+                </ScrollReveal>
               ))}
             </div>
 
@@ -955,12 +1005,16 @@ function ProcessingStrengthSection({ goHomeAndScroll }) {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-5">
-               <PrimaryButton onClick={() => goHomeAndScroll("contact")} full className="!py-5 !text-lg !rounded-2xl shadow-2xl shadow-amber-500/20 active:scale-95 transition-transform flex-1">
-                 Book Free Consulting <ArrowRight size={22} className="ml-2" />
-               </PrimaryButton>
-               <button onClick={() => goHomeAndScroll("loans")} className="flex-1 inline-flex items-center justify-center gap-2 px-8 py-5 rounded-2xl font-bold border-2 border-slate-200 text-[#0B1F3A] hover:bg-slate-50 transition-all active:scale-95">
-                 View Loan Products
-               </button>
+               <ScrollReveal direction="left" delay={0.2} className="flex-1">
+                 <PrimaryButton onClick={() => goHomeAndScroll("contact")} full className="!py-4 !text-lg !rounded-2xl shadow-2xl shadow-amber-500/20 active:scale-95 transition-transform">
+                   Book Free Consulting <ArrowRight size={22} className="ml-2" />
+                 </PrimaryButton>
+               </ScrollReveal>
+               <ScrollReveal direction="right" delay={0.2} className="flex-1">
+                 <button onClick={() => goHomeAndScroll("loans")} className="w-full inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-bold border-2 border-slate-200 text-[#0B1F3A] hover:bg-slate-50 transition-all active:scale-95">
+                   View Loan Products
+                 </button>
+               </ScrollReveal>
             </div>
           </div>
         </div>
@@ -989,19 +1043,21 @@ function HappyCustomersSection() {
           {stats.map((s, i) => {
             const Icon = s.icon;
             return (
-              <div key={i} className="text-center group">
-                <div className="relative inline-flex items-center justify-center mb-6">
-                  <div className="absolute inset-0 bg-white/5 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-500" />
-                  <div className="relative w-16 h-16 bg-white/5 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-white/10 shadow-xl group-hover:-translate-y-1 group-hover:bg-white/20 transition-all duration-500">
-                    <Icon size={28} color="white" strokeWidth={1.5} className="group-hover:scale-110 transition-transform" />
+              <ScrollReveal key={i} direction={i % 2 === 0 ? "left" : "right"} delay={i * 0.05}>
+                <div className="text-center group">
+                  <div className="relative inline-flex items-center justify-center mb-6">
+                    <div className="absolute inset-0 bg-white/5 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-500" />
+                    <div className="relative w-16 h-16 bg-white/5 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-white/10 shadow-xl group-hover:-translate-y-1 group-hover:bg-white/20 transition-all duration-500">
+                      <Icon size={28} color="white" strokeWidth={1.5} className="group-hover:scale-110 transition-transform" />
+                    </div>
                   </div>
-                </div>
 
-                <div className="font-display text-3xl sm:text-4xl font-bold text-white mb-2 tracking-tight">
-                  <CountUp end={s.end} suffix={s.suffix} />
+                  <div className="font-display text-3xl sm:text-4xl font-bold text-white mb-2 tracking-tight">
+                    <CountUp end={s.end} suffix={s.suffix} />
+                  </div>
+                  <div className="text-slate-400 text-[11px] font-bold uppercase tracking-widest">{s.label}</div>
                 </div>
-                <div className="text-slate-400 text-[11px] font-bold uppercase tracking-widest">{s.label}</div>
-              </div>
+              </ScrollReveal>
             );
           })}
         </div>
@@ -1025,27 +1081,31 @@ function BankPartnersSection() {
     <section className="py-16 overflow-hidden bg-slate-50/75 border-y border-slate-100">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12">
-          <div className="max-w-md">
-            <span className="text-[11px] font-bold text-amber-600 uppercase tracking-[0.2em] mb-3 block">Network</span>
-            <h2 className="text-3xl font-bold text-[#0B1F3A] mb-4">Compare Offers from 30+ Leading Partners</h2>
-            <p className="text-slate-500">We work with India's most trusted banks and financial institutions to ensure you get the best deal.</p>
-          </div>
+          <ScrollReveal direction="left">
+            <div className="max-w-md">
+              <span className="text-[11px] font-bold text-amber-600 uppercase tracking-[0.2em] mb-3 block">Network</span>
+              <h2 className="text-3xl font-bold text-[#0B1F3A] mb-4">Compare Offers from 30+ Leading Partners</h2>
+              <p className="text-slate-500">We work with India's most trusted banks and financial institutions to ensure you get the best deal.</p>
+            </div>
+          </ScrollReveal>
 
-          <div className="flex flex-wrap gap-2 bg-slate-100 p-1.5 rounded-2xl">
-            {tabs.map(t => {
-              const Icon = t.icon;
-              const active = activeTab === t.label;
-              return (
-                <button
-                  key={t.label}
-                  onClick={() => setActiveTab(t.label)}
-                  className={`flex items-center gap-2.5 px-6 py-3 rounded-xl text-xs font-bold transition-all ${active ? 'bg-white text-amber-600 shadow-md' : 'text-slate-500 hover:text-slate-700'}`}
-                >
-                  <Icon size={14} /> {t.label}
-                </button>
-              );
-            })}
-          </div>
+          <ScrollReveal direction="right">
+            <div className="flex flex-wrap gap-2 bg-slate-100 p-1.5 rounded-2xl">
+              {tabs.map(t => {
+                const Icon = t.icon;
+                const active = activeTab === t.label;
+                return (
+                  <button
+                    key={t.label}
+                    onClick={() => setActiveTab(t.label)}
+                    className={`flex items-center gap-2.5 px-6 py-3 rounded-xl text-xs font-bold transition-all ${active ? 'bg-white text-amber-600 shadow-md' : 'text-slate-500 hover:text-slate-700'}`}
+                  >
+                    <Icon size={14} /> {t.label}
+                  </button>
+                );
+              })}
+            </div>
+          </ScrollReveal>
         </div>
 
         {/* Improved Marquee */}
@@ -1148,14 +1208,18 @@ function Hero({ navTo, goHomeAndScroll }) {
           </p>
 
           <div className="flex flex-wrap justify-center lg:justify-start gap-5 mb-16">
-            <PrimaryButton onClick={() => goHomeAndScroll("loans")} className="!px-10 !py-4 text-lg">
-              Explore Loans <ArrowRight size={20} />
-            </PrimaryButton>
-            <button onClick={() => navTo("emi")}
-              className="inline-flex items-center gap-3 px-10 py-4 rounded-2xl font-bold border-2 border-white/40 text-white hover:bg-white/5 hover:border-white/60 transition-all text-lg group"
-            >
-              <Calculator size={20} className="text-amber-400 group-hover:scale-110 transition-transform" /> Calculate EMI
-            </button>
+            <ScrollReveal direction="left" delay={0.4}>
+              <PrimaryButton onClick={() => goHomeAndScroll("loans")} className="!px-10 !py-3 text-lg">
+                Explore Loans <ArrowRight size={20} />
+              </PrimaryButton>
+            </ScrollReveal>
+            <ScrollReveal direction="right" delay={0.4}>
+              <button onClick={() => navTo("emi")}
+                className="inline-flex items-center gap-3 px-10 py-3 rounded-2xl font-bold border-2 border-white/40 text-white hover:bg-white/5 hover:border-white/60 transition-all text-lg group"
+              >
+                <Calculator size={20} className="text-amber-400 group-hover:scale-110 transition-transform" /> Calculate EMI
+              </button>
+            </ScrollReveal>
           </div>
 
           <div className="grid grid-cols-2 sm:flex items-center justify-center lg:justify-start gap-x-10 gap-y-6 border-t border-white/10 pt-10">
@@ -1211,102 +1275,72 @@ function Hero({ navTo, goHomeAndScroll }) {
 
 
 function LoanCategoriesSection({ startApplication }) {
-  const sectionRef = useRef(null);
-  const containerRef = useRef(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current || !containerRef.current) return;
-      const section = sectionRef.current;
-      const container = containerRef.current;
-
-      const sectionTop = section.offsetTop;
-      const sectionHeight = section.offsetHeight;
-      const stickyHeight = window.innerHeight;
-
-      const scrollOffset = window.scrollY - sectionTop;
-      const scrollRange = sectionHeight - stickyHeight;
-
-      if (scrollOffset >= 0 && scrollOffset <= scrollRange) {
-        const progress = scrollOffset / scrollRange;
-        const totalWidth = container.scrollWidth;
-        const viewportWidth = window.innerWidth;
-        // Adjusted maxTranslate to ensure the last card stops perfectly
-        const maxTranslate = Math.max(0, totalWidth - viewportWidth + 80);
-        container.style.transform = `translateX(${-progress * maxTranslate}px)`;
-      } else if (scrollOffset < 0) {
-        container.style.transform = `translateX(0px)`;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
-    <section ref={sectionRef} id="loans" className="relative h-[450vh] bg-white overflow-visible pb-32 pt-40">
-      {/* Refined sticky container to ensure full card visibility */}
-      <div className="sticky top-[120px] h-[calc(100vh-120px)] flex flex-col justify-center overflow-visible">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 w-full mb-6 sm:mb-10 shrink-0 relative z-20">
-          <div className="flex flex-col items-center text-center">
-            <span className="inline-block px-4 py-1.5 rounded-full text-[11px] font-bold tracking-[0.2em] text-amber-600 bg-amber-50 uppercase mb-2">
-              Our Financial Solutions
-            </span>
-            <h2 className="font-display text-2xl sm:text-4xl lg:text-5xl font-semibold mb-2 max-w-2xl leading-[1.2]" style={{ color: NAVY }}>
-              Tailored Loan Options for <span className="text-amber-600">Every Need</span>
-            </h2>
-            <div className="h-1.5 w-16 sm:w-20 bg-amber-500 rounded-full mt-2" />
-          </div>
+    <section id="loans" className="py-20 bg-white">
+      <div className="max-w-[1100px] mx-auto px-6 lg:px-10">
+        <div className="flex flex-col items-center text-center mb-16">
+          <span className="inline-block px-4 py-1.5 rounded-full text-[11px] font-bold tracking-[0.2em] text-amber-600 bg-amber-50 uppercase mb-2">
+            Our Financial Solutions
+          </span>
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold mb-2 max-w-2xl leading-[1.2]" style={{ color: NAVY }}>
+            Tailored Loan Options for <span className="text-amber-600">Every Need</span>
+          </h2>
+          <div className="h-1.5 w-16 sm:w-20 bg-amber-500 rounded-full mt-2" />
         </div>
 
-        <div
-          ref={containerRef}
-          className="flex gap-6 sm:gap-10 px-6 lg:px-20 transition-transform duration-150 ease-out will-change-transform w-max pb-20 items-stretch overflow-visible"
-        >
-          {LOAN_CATEGORIES.map((cat) => {
-            const Icon = cat.icon;
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {LOAN_CATEGORIES.map((cat, idx) => {
             return (
-              <div
-                key={cat.id}
-                className="group relative bg-white/70 backdrop-blur-sm rounded-[2.5rem] border-2 border-slate-200/80 p-5 sm:p-7 transition-all duration-500 hover:shadow-[0_40px_80px_-15px_rgba(11,31,58,0.15)] hover:-translate-y-2 hover:border-amber-500/40 overflow-hidden flex flex-col shadow-xl shadow-slate-200/10 w-[250px] sm:w-[320px] flex-shrink-0"
-              >
-                <div className="absolute -top-12 -right-12 w-32 h-32 bg-slate-50 rounded-full transition-all duration-500 group-hover:scale-[2.5] group-hover:bg-amber-50/50 -z-0" />
+              <ScrollReveal key={cat.id} direction={idx % 2 === 0 ? "left" : "right"} delay={idx * 0.05}>
+                <div
+                  className="group relative bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden flex flex-col shadow-xl shadow-slate-200/10 transition-all duration-500 hover:shadow-2xl hover:border-amber-500/30"
+                >
+                  {/* Image at Top */}
+                  <div className="relative h-52 overflow-hidden">
+                    <img
+                      src={cat.img}
+                      alt={cat.name}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-slate-900/10 transition-opacity group-hover:opacity-0" />
 
-                <div className="relative z-10 flex flex-col h-full">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center mb-3 transition-all duration-500 bg-slate-50 group-hover:bg-amber-500 group-hover:shadow-lg group-hover:shadow-amber-500/30">
-                    <Icon size={24} className="text-slate-700 transition-colors duration-500 group-hover:text-white sm:w-7 sm:h-7" />
+                    {/* Step Badge */}
+                    <div className="absolute top-4 left-4 bg-[#0B1F3A] text-white px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest border border-white/20">
+                      <span className="text-amber-400">0{idx + 1}</span> — {cat.id === 'lap' ? 'Mortgage' : cat.id.toUpperCase()}
+                    </div>
                   </div>
 
-                  <h3 className="font-display text-lg sm:text-xl lg:text-2xl font-bold mb-1 transition-colors duration-500 group-hover:text-amber-700" style={{ color: NAVY }}>
-                    {cat.name}
-                  </h3>
+                  <div className="relative z-10 flex flex-col h-full p-7 sm:p-9">
+                    <h3 className="font-display text-xl sm:text-2xl font-bold mb-1 transition-colors duration-500 group-hover:text-amber-700" style={{ color: NAVY }}>
+                      {cat.name}
+                    </h3>
 
-                  <div className="inline-flex items-center px-3 py-1 rounded-lg bg-amber-50 text-amber-700 text-[9px] sm:text-xs font-bold mb-3 w-fit">
-                    Starts from {cat.rate.split('–')[0]}
+                    <div className="inline-flex items-center text-amber-600 text-[10px] sm:text-xs font-black uppercase tracking-widest mb-4">
+                      Starts from {cat.rate.split('–')[0]}
+                    </div>
+
+                    <ul className="space-y-3 sm:space-y-4 mb-8 flex-grow">
+                      {cat.points.map(p => (
+                        <li key={p} className="flex items-start gap-3 text-slate-500 group-hover:text-slate-600 transition-colors">
+                          <div className="mt-1 w-4 h-4 rounded-full bg-amber-50 flex items-center justify-center flex-shrink-0 group-hover:bg-amber-100 transition-colors">
+                            <Check size={10} className="text-amber-600" />
+                          </div>
+                          <span className="text-xs sm:text-sm leading-snug">{p}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <button
+                      onClick={() => startApplication(cat.name)}
+                      className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all duration-300 bg-slate-50 text-slate-700 hover:bg-[#0B1F3A] hover:text-white hover:shadow-xl mt-auto border border-slate-100"
+                    >
+                      Apply Now <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+                    </button>
                   </div>
-
-                  <ul className="space-y-2 sm:space-y-3 mb-5 flex-grow">
-                    {cat.points.map(p => (
-                      <li key={p} className="flex items-start gap-3 text-slate-500 group-hover:text-slate-600 transition-colors">
-                        <div className="mt-1 w-4 h-4 rounded-full bg-amber-50 flex items-center justify-center flex-shrink-0 group-hover:bg-amber-100 transition-colors">
-                          <Check size={10} className="text-amber-600" />
-                        </div>
-                        <span className="text-xs sm:text-sm lg:text-[15px] leading-snug">{p}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <button
-                    onClick={() => startApplication(cat.name)}
-                    className="w-full inline-flex items-center justify-center gap-2 py-3 sm:py-4 rounded-2xl font-bold text-xs sm:text-sm transition-all duration-300 bg-slate-50 text-slate-700 hover:bg-[#0B1F3A] hover:text-white hover:shadow-xl mt-auto"
-                  >
-                    Apply Now <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
-                  </button>
                 </div>
-              </div>
+              </ScrollReveal>
             );
           })}
-          <div className="w-[10vw] flex-shrink-0" />
         </div>
       </div>
     </section>
@@ -1336,12 +1370,14 @@ function EMITeaserStrip({ navTo }) {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button
-                onClick={() => navTo("emi")}
-                className="inline-flex items-center justify-center gap-3 px-8 py-3.5 rounded-2xl font-bold text-xs sm:text-sm text-slate-900 bg-amber-400 hover:bg-amber-300 transition-all shadow-xl shadow-amber-500/20"
-              >
-                Launch EMI Calculator <ChevronRight size={18} />
-              </button>
+              <ScrollReveal direction="right" delay={0.1}>
+                <button
+                  onClick={() => navTo("emi")}
+                  className="inline-flex items-center justify-center gap-3 px-8 py-2.5 rounded-2xl font-bold text-xs sm:text-sm text-slate-900 bg-amber-400 hover:bg-amber-300 transition-all shadow-xl shadow-amber-500/20"
+                >
+                  Launch EMI Calculator <ChevronRight size={18} />
+                </button>
+              </ScrollReveal>
             </div>
           </div>
         </div>
@@ -1419,12 +1455,16 @@ function WhyChooseUsSection({ goHomeAndScroll }) {
           </div>
 
           <div className="flex flex-wrap gap-5">
-            <PrimaryButton onClick={() => goHomeAndScroll("contact")} className="!px-10 !py-4 shadow-xl shadow-amber-500/20">
-              Book A Free Session
-            </PrimaryButton>
-            <GhostButton onClick={() => goHomeAndScroll("loans")} className="!px-10 !py-4">
-              Explore Our Services
-            </GhostButton>
+            <ScrollReveal direction="left" delay={0.2}>
+              <PrimaryButton onClick={() => goHomeAndScroll("contact")} className="!px-10 !py-3 shadow-xl shadow-amber-500/20">
+                Book A Free Session
+              </PrimaryButton>
+            </ScrollReveal>
+            <ScrollReveal direction="right" delay={0.2}>
+              <GhostButton onClick={() => goHomeAndScroll("loans")} className="!px-10 !py-3">
+                Explore Our Services
+              </GhostButton>
+            </ScrollReveal>
           </div>
         </div>
           </ScrollReveal>
@@ -1508,37 +1548,38 @@ function HowItWorksSection() {
           {/* Left Side: Scrolling Content */}
           <div className="w-full lg:w-1/2 lg:pr-16">
             {steps.map((s, i) => (
-              <div
-                key={s.n}
-                ref={el => (stepRefs.current[i] = el)}
-                data-index={i}
-                className="min-h-[60vh] flex flex-col justify-center py-20"
-              >
-                <div className="relative">
-                  <div className="absolute -top-24 -left-8 text-[15rem] font-black text-slate-100/60 select-none leading-none -z-10">
-                    {s.n}
-                  </div>
-                  <h3 className="text-3xl sm:text-4xl font-bold text-[#0B1F3A] mb-8 relative text-left uppercase">
-                    <span className="inline-block w-12 h-1 bg-amber-500 absolute -bottom-3 left-0" />
-                    {s.title}
-                  </h3>
-                  <p className="text-slate-500 text-lg leading-relaxed max-w-lg text-left">
-                    {s.text}
-                  </p>
-                </div>
-
-                {/* Mobile Image (visible only on small screens) */}
-                <div className="lg:hidden mt-12 relative">
-                  <div className="rounded-[2.5rem] overflow-hidden shadow-xl">
-                    <img src={s.img} alt={s.title} className="w-full aspect-video object-cover" />
-                  </div>
-                  <div className="mt-6 bg-slate-50 rounded-2xl p-6 border border-slate-100 text-left">
-                    <p className="text-sm text-slate-600 leading-relaxed font-medium text-left">
-                      {s.floatingText}
+              <ScrollReveal key={s.n} direction={i % 2 === 0 ? "left" : "right"} delay={0.1}>
+                <div
+                  ref={el => (stepRefs.current[i] = el)}
+                  data-index={i}
+                  className="min-h-[60vh] flex flex-col justify-center py-20"
+                >
+                  <div className="relative">
+                    <div className="absolute -top-24 -left-8 text-[15rem] font-black text-slate-100/60 select-none leading-none -z-10">
+                      {s.n}
+                    </div>
+                    <h3 className="text-3xl sm:text-4xl font-bold text-[#0B1F3A] mb-8 relative text-left uppercase">
+                      <span className="inline-block w-12 h-1 bg-amber-500 absolute -bottom-3 left-0" />
+                      {s.title}
+                    </h3>
+                    <p className="text-slate-500 text-lg leading-relaxed max-w-lg text-left">
+                      {s.text}
                     </p>
                   </div>
+
+                  {/* Mobile Image (visible only on small screens) */}
+                  <div className="lg:hidden mt-12 relative">
+                    <div className="rounded-[2.5rem] overflow-hidden shadow-xl">
+                      <img src={s.img} alt={s.title} className="w-full aspect-video object-cover" />
+                    </div>
+                    <div className="mt-6 bg-slate-50 rounded-2xl p-6 border border-slate-100 text-left">
+                      <p className="text-sm text-slate-600 leading-relaxed font-medium text-left">
+                        {s.floatingText}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
 
@@ -1631,10 +1672,12 @@ function FAQSection() {
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {FAQS.slice(0, 6).map((f, i) => (
-            <div key={i} className="bg-white/45 backdrop-blur-sm p-8 rounded-[2rem] border-2 border-slate-300/85 shadow-xl shadow-slate-200/20 hover:border-amber-500/30 hover:bg-white hover:shadow-2xl transition-all duration-300">
-              <h3 className="text-lg font-bold mb-4" style={{ color: "#1D4E89" }}>{f.q}</h3>
-              <p className="text-sm text-slate-500 leading-relaxed">{f.a}</p>
-            </div>
+            <ScrollReveal key={i} direction={i % 2 === 0 ? "left" : "right"} delay={i * 0.05}>
+              <div className="bg-white/45 backdrop-blur-sm p-8 rounded-[2rem] border-2 border-slate-300/85 shadow-xl shadow-slate-200/20 hover:border-amber-500/30 hover:bg-white hover:shadow-2xl transition-all duration-300 h-full">
+                <h3 className="text-lg font-bold mb-4" style={{ color: "#1D4E89" }}>{f.q}</h3>
+                <p className="text-sm text-slate-500 leading-relaxed">{f.a}</p>
+              </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>
@@ -1729,175 +1772,179 @@ function ContactSection() {
   const iconInputCls = "w-full rounded-xl border border-slate-200 pl-11 pr-4 py-3 text-sm text-slate-700 outline-none transition-all focus:border-amber-500 focus:ring-4 focus:ring-amber-500/5 bg-white";
 
   return (
-    <section id="contact" className="max-w-[1400px] mx-auto px-6 lg:px-10 py-16 bg-white">
+    <section id="contact" className="max-w-[1400px] mx-auto px-6 lg:px-10 py-16 bg-white overflow-hidden">
       <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-12 items-start">
         {/* Left Column */}
-        <div>
-          <h2 className="font-display text-3xl sm:text-4xl font-semibold leading-[1.15] mb-4" style={{ color: NAVY }}>
-            Contact Us Today, Get<br />
-            In Touch With <span style={{ color: TEAL }}>Expert</span>
-          </h2>
-          <p className="text-slate-500 text-base mb-8 leading-relaxed max-w-md">
-            Free loan consultation in Surat — speak with our advisors and get the right bank offer without extra consultancy charges.
-          </p>
+        <ScrollReveal direction="left">
+          <div>
+            <h2 className="font-display text-3xl sm:text-4xl font-semibold leading-[1.15] mb-4" style={{ color: NAVY }}>
+              Contact Us Today, Get<br />
+              In Touch With <span style={{ color: TEAL }}>Expert</span>
+            </h2>
+            <p className="text-slate-500 text-base mb-8 leading-relaxed max-w-md">
+              Free loan consultation in Surat — speak with our advisors and get the right bank offer without extra consultancy charges.
+            </p>
 
-          <div className="space-y-5 mb-10">
-            {/* Call Us */}
-            <div className="bg-white/45 backdrop-blur-sm rounded-2xl p-5 border-2 border-slate-200/60 shadow-xl flex items-start gap-4 transition-all hover:border-amber-500/30">
-              <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: "rgba(14,154,135,0.1)" }}>
-                <Phone size={18} style={{ color: TEAL }} />
-              </div>
-              <div>
-                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Call Us</div>
-                <div className="text-base font-bold text-slate-700 leading-tight">+91 6352243073</div>
-                <div className="text-base font-bold text-slate-700">+91 99790 43073</div>
-              </div>
-            </div>
-
-            {/* Our Office */}
-            <div className="bg-white/45 backdrop-blur-sm rounded-2xl p-5 border-2 border-slate-200/60 shadow-xl flex items-start gap-4 transition-all hover:border-amber-500/30">
-              <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: "rgba(14,154,135,0.1)" }}>
-                <MapPin size={18} style={{ color: TEAL }} />
-              </div>
-              <div>
-                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Our Office</div>
-                <div className="text-sm font-medium text-slate-700 mb-1">
-                  <span className="font-bold">Surat —</span> D-2008, 2nd Floor, Central Bazar, Minibazar, Varachha Main Road, Surat-395006.
+            <div className="space-y-5 mb-10">
+              {/* Call Us */}
+              <div className="bg-white/45 backdrop-blur-sm rounded-2xl p-5 border-2 border-slate-200/60 shadow-xl flex items-start gap-4 transition-all hover:border-amber-500/30">
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: "rgba(14,154,135,0.1)" }}>
+                  <Phone size={18} style={{ color: TEAL }} />
                 </div>
-                <a href="https://www.google.com/maps/search/?api=1&query=D-2008%2C+2nd+Floor%2C+Central+Bazar%2C+Minibazar%2C+Varachha+Main+Road%2C+Surat-395006" target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-amber-600 uppercase tracking-wider hover:underline">View full address</a>
-              </div>
-            </div>
-
-            {/* Follow Us */}
-            <div className="bg-white/45 backdrop-blur-sm rounded-2xl p-5 border-2 border-slate-200/60 shadow-xl flex items-center gap-4 justify-between transition-all hover:border-amber-500/30">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: "rgba(14,154,135,0.1)" }}>
-                  <MessageCircle size={18} style={{ color: TEAL }} />
+                <div>
+                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Call Us</div>
+                  <div className="text-base font-bold text-slate-700 leading-tight">+91 6352243073</div>
+                  <div className="text-base font-bold text-slate-700">+91 99790 43073</div>
                 </div>
-                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Follow Us</div>
               </div>
-              <div className="flex gap-2">
-                <a href="tel:+916352243073" className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm text-blue-600 hover:scale-110 transition-transform border border-slate-100"><Phone size={16} /></a>
-                <a href="https://www.instagram.com/mandani_associate/" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm text-pink-600 hover:scale-110 transition-transform border border-slate-100"><Instagram size={16} /></a>
-                <a href="https://wa.me/916352243073" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm text-green-600 hover:scale-110 transition-transform border border-slate-100"><MessageCircle size={16} fill="currentColor" /></a>
+
+              {/* Our Office */}
+              <div className="bg-white/45 backdrop-blur-sm rounded-2xl p-5 border-2 border-slate-200/60 shadow-xl flex items-start gap-4 transition-all hover:border-amber-500/30">
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: "rgba(14,154,135,0.1)" }}>
+                  <MapPin size={18} style={{ color: TEAL }} />
+                </div>
+                <div>
+                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Our Office</div>
+                  <div className="text-sm font-medium text-slate-700 mb-1">
+                    <span className="font-bold">Surat —</span> D-2008, 2nd Floor, Central Bazar, Minibazar, Varachha Main Road, Surat-395006.
+                  </div>
+                  <a href="https://www.google.com/maps/search/?api=1&query=D-2008%2C+2nd+Floor%2C+Central+Bazar%2C+Minibazar%2C+Varachha+Main+Road%2C+Surat-395006" target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-amber-600 uppercase tracking-wider hover:underline">View full address</a>
+                </div>
+              </div>
+
+              {/* Follow Us */}
+              <div className="bg-white/45 backdrop-blur-sm rounded-2xl p-5 border-2 border-slate-200/60 shadow-xl flex items-center gap-4 justify-between transition-all hover:border-amber-500/30">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: "rgba(14,154,135,0.1)" }}>
+                    <MessageCircle size={18} style={{ color: TEAL }} />
+                  </div>
+                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Follow Us</div>
+                </div>
+                <div className="flex gap-2">
+                  <a href="tel:+916352243073" className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm text-blue-600 hover:scale-110 transition-transform border border-slate-100"><Phone size={16} /></a>
+                  <a href="https://www.instagram.com/mandani_associate/" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm text-pink-600 hover:scale-110 transition-transform border border-slate-100"><Instagram size={16} /></a>
+                  <a href="https://wa.me/916352243073" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm text-green-600 hover:scale-110 transition-transform border border-slate-100"><MessageCircle size={16} fill="currentColor" /></a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* Right Column: Form */}
-        <div className="relative group">
-          <div className="absolute -top-1 left-0 right-0 h-1.5 bg-amber-500 rounded-t-3xl z-10" />
-          <div className="bg-white rounded-3xl border border-slate-100 shadow-2xl p-6 sm:p-10 relative">
-            <div className="mb-8">
-              <span className="text-[10px] font-bold text-amber-600 uppercase tracking-[0.2em] mb-2 block">Contact Form</span>
-              <h3 className="font-display text-2xl font-semibold mb-2" style={{ color: NAVY }}>Get A Flexible Schedule</h3>
-              <p className="text-slate-500 text-sm">Share your details and we'll call you back with the best loan options in Surat.</p>
-            </div>
+        <ScrollReveal direction="right">
+          <div className="relative group">
+            <div className="absolute -top-1 left-0 right-0 h-1.5 bg-amber-500 rounded-t-3xl z-10" />
+            <div className="bg-white rounded-3xl border border-slate-100 shadow-2xl p-6 sm:p-10 relative">
+              <div className="mb-8">
+                <span className="text-[10px] font-bold text-amber-600 uppercase tracking-[0.2em] mb-2 block">Contact Form</span>
+                <h3 className="font-display text-2xl font-semibold mb-2" style={{ color: NAVY }}>Get A Flexible Schedule</h3>
+                <p className="text-slate-500 text-sm">Share your details and we'll call you back with the best loan options in Surat.</p>
+              </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="grid sm:grid-cols-2 gap-5">
-                <div className="relative">
-                  <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                  <input
-                    required
-                    className={iconInputCls}
-                    placeholder="Full name"
-                    value={formData.fullName}
-                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                  />
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="grid sm:grid-cols-2 gap-5">
+                  <div className="relative">
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                    <input
+                      required
+                      className={iconInputCls}
+                      placeholder="Full name"
+                      value={formData.fullName}
+                      onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                    />
+                  </div>
+                  <div className="relative">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                    <input
+                      required
+                      type="email"
+                      className={iconInputCls}
+                      placeholder="Email address"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    />
+                  </div>
+                  <div className="relative">
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                    <input
+                      required
+                      className={iconInputCls}
+                      placeholder="Phone (10 digits)"
+                      maxLength={10}
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, "") })}
+                    />
+                  </div>
+                  <div className="relative">
+                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                    <select
+                      className={iconInputCls + " appearance-none"}
+                      value={formData.city}
+                      onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                    >
+                      <option value="Surat">Surat</option>
+                      <option value="Ahmedabad">Ahmedabad</option>
+                      <option value="Vadodara">Vadodara</option>
+                      <option value="Mumbai">Mumbai</option>
+                      <option value="Other">Other</option>
+                    </select>
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={16} />
+                  </div>
                 </div>
+
                 <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                  <input
-                    required
-                    type="email"
-                    className={iconInputCls}
-                    placeholder="Email address"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  />
-                </div>
-                <div className="relative">
-                  <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                  <input
-                    required
-                    className={iconInputCls}
-                    placeholder="Phone (10 digits)"
-                    maxLength={10}
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, "") })}
-                  />
-                </div>
-                <div className="relative">
-                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                  <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                   <select
                     className={iconInputCls + " appearance-none"}
-                    value={formData.city}
-                    onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                    value={formData.loanType}
+                    onChange={(e) => setFormData({ ...formData, loanType: e.target.value })}
                   >
-                    <option value="Surat">Surat</option>
-                    <option value="Ahmedabad">Ahmedabad</option>
-                    <option value="Vadodara">Vadodara</option>
-                    <option value="Mumbai">Mumbai</option>
+                    <option value="">Select loan type</option>
+                    <option value="Personal Loan">Personal Loan</option>
+                    <option value="Home Loan">Home Loan</option>
+                    <option value="Business Loan">Business Loan</option>
+                    <option value="Mortgage Loan">Mortgage Loan</option>
+                    <option value="Car Loan">Car Loan</option>
                     <option value="Other">Other</option>
                   </select>
                   <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={16} />
                 </div>
-              </div>
 
-              <div className="relative">
-                <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                <select
-                  className={iconInputCls + " appearance-none"}
-                  value={formData.loanType}
-                  onChange={(e) => setFormData({ ...formData, loanType: e.target.value })}
-                >
-                  <option value="">Select loan type</option>
-                  <option value="Personal Loan">Personal Loan</option>
-                  <option value="Home Loan">Home Loan</option>
-                  <option value="Business Loan">Business Loan</option>
-                  <option value="Mortgage Loan">Mortgage Loan</option>
-                  <option value="Car Loan">Car Loan</option>
-                  <option value="Other">Other</option>
-                </select>
-                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={16} />
-              </div>
+                <div className="relative">
+                  <textarea
+                    rows={4}
+                    className="w-full rounded-xl border border-slate-200 p-4 text-sm text-slate-700 outline-none transition-all focus:border-amber-500 focus:ring-4 focus:ring-amber-500/5 bg-white"
+                    placeholder="Write your message..."
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  />
+                </div>
 
-              <div className="relative">
-                <textarea
-                  rows={4}
-                  className="w-full rounded-xl border border-slate-200 p-4 text-sm text-slate-700 outline-none transition-all focus:border-amber-500 focus:ring-4 focus:ring-amber-500/5 bg-white"
-                  placeholder="Write your message..."
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                />
-              </div>
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    required
+                    checked={formData.termsAccepted}
+                    onChange={(e) => setFormData({ ...formData, termsAccepted: e.target.checked })}
+                    className="mt-1.5 rounded border-slate-300 text-amber-600 focus:ring-amber-500"
+                  />
+                  <span className="text-xs text-slate-400 leading-relaxed">
+                    I agree to the <button type="button" className="text-teal-600 hover:underline">Terms & Conditions</button> and <button type="button" className="text-teal-600 hover:underline">Privacy Policy</button> of MANDANI ASSOCIATE.
+                  </span>
+                </label>
 
-              <label className="flex items-start gap-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  required
-                  checked={formData.termsAccepted}
-                  onChange={(e) => setFormData({ ...formData, termsAccepted: e.target.checked })}
-                  className="mt-1.5 rounded border-slate-300 text-amber-600 focus:ring-amber-500"
-                />
-                <span className="text-xs text-slate-400 leading-relaxed">
-                  I agree to the <button type="button" className="text-teal-600 hover:underline">Terms & Conditions</button> and <button type="button" className="text-teal-600 hover:underline">Privacy Policy</button> of MANDANI ASSOCIATE.
-                </span>
-              </label>
+                <PrimaryButton type="submit" full disabled={loading} className="!py-4 shadow-xl shadow-amber-600/20 group">
+                  <Send size={18} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-0.5" />
+                  {loading ? "Sending..." : "Send Request"}
+                </PrimaryButton>
 
-              <PrimaryButton type="submit" full disabled={loading} className="!py-4 shadow-xl shadow-amber-600/20 group">
-                <Send size={18} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-0.5" />
-                {loading ? "Sending..." : "Send Request"}
-              </PrimaryButton>
-
-              <div className="text-center">
-                <p className="text-[10px] text-slate-300">This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.</p>
-              </div>
-            </form>
+                <div className="text-center">
+                  <p className="text-[10px] text-slate-300">This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.</p>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );
@@ -2123,12 +2170,12 @@ function EMICalculatorView({ navTo, startApplication, goHomeAndScroll }) {
             </p>
 
             <div className="flex flex-wrap justify-center gap-5">
-              <PrimaryButton onClick={() => goHomeAndScroll("contact")} className="!px-10 !py-4 shadow-xl shadow-amber-500/20">
+              <PrimaryButton onClick={() => goHomeAndScroll("contact")} className="!px-10 !py-3 shadow-xl shadow-amber-500/20">
                 Free consultation
               </PrimaryButton>
               <button
                 onClick={() => goHomeAndScroll("loans")}
-                className="inline-flex items-center gap-2 px-10 py-4 rounded-xl font-bold border-2 border-white/50 text-white hover:bg-white/5 transition-all active:scale-95"
+                className="inline-flex items-center gap-2 px-10 py-3 rounded-xl font-bold border-2 border-white/50 text-white hover:bg-white/5 transition-all active:scale-95"
               >
                 Our loan services
               </button>
@@ -2195,7 +2242,7 @@ function EMICalculatorView({ navTo, startApplication, goHomeAndScroll }) {
               </div>
 
               <div className="mt-12 flex flex-col gap-6">
-                <PrimaryButton full className="!py-5 !text-lg !rounded-2xl" onClick={() => startApplication("EMI Calculator")}>
+                <PrimaryButton full className="!py-4 !text-lg !rounded-2xl" onClick={() => startApplication("EMI Calculator")}>
                   Apply for This Loan Now
                 </PrimaryButton>
                 <DisclaimerNote compact>
@@ -2436,12 +2483,12 @@ function EligibilityView({ navTo, startApplication, goHomeAndScroll }) {
             <PrimaryButton onClick={() => {
               const el = document.getElementById("eligibility-form");
               if (el) el.scrollIntoView({ behavior: "smooth" });
-            }} className="!px-10 !py-4 shadow-xl shadow-amber-500/20">
+            }} className="!px-10 !py-3 shadow-xl shadow-amber-500/20">
               Check now
             </PrimaryButton>
             <button
               onClick={() => goHomeAndScroll("contact")}
-              className="inline-flex items-center gap-2 px-10 py-4 rounded-xl font-bold border-2 border-white/50 text-white hover:bg-white/5 transition-all"
+              className="inline-flex items-center gap-2 px-10 py-3 rounded-xl font-bold border-2 border-white/50 text-white hover:bg-white/5 transition-all"
             >
               Expert guidance
             </button>
@@ -2787,6 +2834,12 @@ function ReviewRow({ label, value }) {
 
 /* ---------------------------------- ABOUT ------------------------------------ */
 function AboutView({ navTo, goHomeAndScroll }) {
+  const highlights = [
+    { title: "Strategic Analysis", desc: "We perform a deep-dive into your financial profile to match you with the right lender." },
+    { title: "Lender Negotiations", desc: "Leveraging our 30+ bank partnerships to secure you lower rates and better terms." },
+    { title: "Compliance Assurance", desc: "Our team ensures all documentation meets stringent banking standards for first-time success." }
+  ];
+
   const whyUsItems = [
     {
       title: "Long experience",
@@ -2826,7 +2879,7 @@ function AboutView({ navTo, goHomeAndScroll }) {
       <section className="relative overflow-hidden py-24 lg:py-36 bg-[#0B1F3A]">
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80"
+            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1700&q=90"
             alt="About MANDANI Associate"
             className="w-full h-full object-cover"
             style={{ opacity: 0.95 }}
@@ -2842,40 +2895,86 @@ function AboutView({ navTo, goHomeAndScroll }) {
             <span className="text-[11px] font-bold text-amber-400 uppercase tracking-widest">About Us</span>
           </div>
 
-          <h1 className="font-display text-white text-4xl sm:text-7xl font-bold mb-8 leading-tight">
-            About MANDANI Associate — Loan<br />Advisors in <span className="text-amber-400">Surat</span>
+          <h1 className="font-display text-white text-4xl sm:text-6xl font-bold mb-8 leading-tight">
+            Our Legacy in <span className="text-amber-400">Finance</span>
           </h1>
 
           <p className="text-white text-lg sm:text-xl max-w-4xl mx-auto mb-12 leading-relaxed font-medium">
-            Your trusted loan advisors in Surat — complete solutions for home, business, education, personal, and secured loans.
+            Discover how Mandani Associate has been transforming the borrowing experience for thousands of clients across Gujarat.
           </p>
 
           <div className="flex flex-wrap justify-center gap-5">
-            <PrimaryButton onClick={() => goHomeAndScroll("contact")} className="!px-10 !py-4 shadow-xl shadow-amber-500/20">
-              Free consultation
+            <PrimaryButton onClick={() => goHomeAndScroll("contact")} className="!px-10 !py-3 shadow-xl shadow-amber-500/20">
+              Speak with a partner
             </PrimaryButton>
-            <button
-              onClick={() => goHomeAndScroll("loans")}
-              className="inline-flex items-center gap-2 px-10 py-4 rounded-xl font-bold border-2 border-white/50 text-white hover:bg-white/5 transition-all active:scale-95"
-            >
-              Our services
-            </button>
           </div>
         </div>
       </section>
 
+      {/* Unique Mission & Image Section for About Us */}
+      <section className="max-w-[1100px] mx-auto px-6 lg:px-10 py-20 relative">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <ScrollReveal direction="left">
+            <div>
+              <span className="inline-block px-4 py-1.5 rounded-full text-[11px] font-bold tracking-[0.2em] text-amber-600 bg-amber-50 uppercase mb-8">
+                Our Philosophy
+              </span>
+              <h2 className="font-display text-4xl sm:text-5xl font-bold leading-[1.1] mb-10" style={{ color: NAVY }}>
+                Architecting Your <span className="text-amber-600 italic">Financial Roadmap</span>
+              </h2>
+              <p className="text-slate-500 text-lg mb-10 leading-relaxed">
+                Mandani Associate was founded on the principle of transparency. We realized that navigating the complexities of modern banking shouldn't be a burden for business owners and families. Our approach combines traditional values with modern data-driven strategies.
+              </p>
+
+              <div className="space-y-8">
+                {highlights.map((h, i) => (
+                  <div key={i} className="flex gap-6 group">
+                    <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center flex-shrink-0 group-hover:bg-[#0B1F3A] group-hover:text-white transition-all duration-300">
+                      <CheckCircle2 size={24} className="text-amber-500" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-slate-900 mb-2">{h.title}</h3>
+                      <p className="text-slate-500 leading-relaxed max-w-md text-sm">{h.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal direction="right">
+            <div className="relative">
+              <div className="relative z-10 rounded-[3rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(11,31,58,0.15)] transform -rotate-2 hover:rotate-0 transition-transform duration-700">
+                <img
+                  src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=80"
+                  alt="Financial Strategy Session"
+                  className="w-full aspect-[4/5] object-cover"
+                />
+              </div>
+              {/* Experience Badge */}
+              <div className="absolute -bottom-10 -right-10 z-20 bg-[#0B1F3A] rounded-[2rem] p-10 shadow-2xl animate-bounce-subtle hidden sm:block">
+                <div className="text-amber-400 text-5xl font-bold mb-2">5k+</div>
+                <div className="text-white/90 text-xs font-bold uppercase tracking-widest leading-tight">
+                  Families & Businesses<br />Empowered Since 2016
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
       {/* Why Choose Us Grid Section */}
-      <section className="max-w-[1400px] mx-auto px-6 lg:px-10 py-24 bg-white">
+      <section className="max-w-[1050px] mx-auto px-6 lg:px-10 py-20 bg-white">
           <ScrollReveal direction="up">
         <div className="text-center mb-16">
           <span className="inline-block px-4 py-1.5 rounded-full text-[11px] font-bold tracking-[0.2em] text-amber-600 bg-amber-50 uppercase mb-4">
             WHY CHOOSE US
           </span>
           <h2 className="font-display text-3xl sm:text-5xl font-bold mb-6 max-w-4xl mx-auto leading-tight text-[#0B1F3A]">
-            We facilitate <span className="text-amber-600">complete solutions</span> for all types of loans
+            Complete Solutions, <span className="text-amber-600">Zero Complications</span>
           </h2>
           <p className="text-slate-500 text-lg max-w-3xl mx-auto">
-            We offer loan services from banks, NBFCs, and other financers — including consultancy, documentation, and coordination for legal procedures.
+            From initial consultation to final disbursement, we handle every detail so you can focus on what matters most.
           </p>
         </div>
         </ScrollReveal>
@@ -2919,7 +3018,7 @@ function DocumentsView({ navTo, goHomeAndScroll }) {
       <section className="relative overflow-hidden py-24 lg:py-36 bg-[#0B1F3A]">
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1600&q=80"
+            src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1600&q=80"
             alt="Documents Background"
             className="w-full h-full object-cover"
             style={{ opacity: 1.0 }}
@@ -2944,12 +3043,12 @@ function DocumentsView({ navTo, goHomeAndScroll }) {
           </p>
 
           <div className="flex flex-wrap justify-center gap-5">
-            <PrimaryButton onClick={() => navTo("apply")} className="!px-10 !py-4 shadow-xl shadow-amber-500/20">
+            <PrimaryButton onClick={() => navTo("apply")} className="!px-10 !py-3 shadow-xl shadow-amber-500/20">
               Start your application
             </PrimaryButton>
             <button
               onClick={() => goHomeAndScroll("contact")}
-              className="inline-flex items-center gap-2 px-10 py-4 rounded-xl font-bold border-2 border-white/50 text-white hover:bg-white/5 transition-all active:scale-95"
+              className="inline-flex items-center gap-2 px-10 py-3 rounded-xl font-bold border-2 border-white/50 text-white hover:bg-white/5 transition-all active:scale-95"
             >
               Ask a consultant
             </button>
@@ -3492,7 +3591,7 @@ function CibilScoreView({ navTo, startApplication, goHomeAndScroll }) {
                 </div>
               </div>
 
-              <PrimaryButton full className="!rounded-full !py-4 shadow-lg shadow-amber-500/20" onClick={() => {
+              <PrimaryButton full className="!rounded-full !py-3 shadow-lg shadow-amber-500/20" onClick={() => {
                 const el = document.getElementById("check-form");
                 if (el) el.scrollIntoView({ behavior: "smooth" });
               }}>
