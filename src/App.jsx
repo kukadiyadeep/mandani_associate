@@ -526,14 +526,14 @@ function Header({ scrolled, view, navTo, goHomeAndScroll, startApplication, mobi
   ];
 
   return (
-    <header className={`relative z-50 transition-all duration-300 border-b ${scrolled ? 'bg-transparent border-white/35' : 'bg-white/5 backdrop-blur-lg border-white/40'}`}>
+    <header className={`relative z-50 transition-all duration-300 border-b ${scrolled ? 'bg-[#0B1F3A]/95 border-white/10' : 'bg-[#0B1F3A]/80 backdrop-blur-lg border-white/20'}`}>
       <div className="px-6 lg:px-10 h-20 flex items-center justify-between max-w-[1440px] mx-auto">
         <button onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); navTo("home"); }} className="flex items-center gap-4 group">
-          <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-2xl border border-white/20">
+          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white rounded-full flex items-center justify-center shadow-2xl border border-white/20 overflow-hidden">
             <img
               src="/mandanilogo.png"
               alt="MANDANI"
-              className="w-20 h-20 object-contain p-1"
+              className="w-full h-full object-contain p-1.5"
               onError={(e) => {
                 e.target.style.display = 'none';
                 e.target.nextSibling.style.display = 'flex';
@@ -545,10 +545,10 @@ function Header({ scrolled, view, navTo, goHomeAndScroll, startApplication, mobi
             </div>
           </div>
           <div className="text-left">
-            <h1 className="block font-display font-bold text-2xl tracking-tight leading-none" style={{ color: GOLD_LIGHT }}>
+            <h1 className="block font-display font-bold text-xl sm:text-2xl tracking-tight leading-none" style={{ color: GOLD_LIGHT }}>
               MANDANI
             </h1>
-            <p className="block text-[10px] font-black tracking-[0.28em] uppercase mt-1 text-white">
+            <p className="block text-[8px] sm:text-[10px] font-black tracking-[0.28em] uppercase mt-1 text-white">
               Associate
             </p>
          </div>
@@ -558,8 +558,7 @@ function Header({ scrolled, view, navTo, goHomeAndScroll, startApplication, mobi
             <button
               key={l.id}
               onClick={l.action}
-              className={`px-4 py-2 text-sm font-bold transition-all rounded-xl ${view === l.id ? 'bg-white/5' : 'hover:bg-white/5 text-white'}`}
-              style={{ color: view === l.id ? GOLD_LIGHT : 'white' }}
+              className={`px-4 py-2 text-sm font-bold transition-all rounded-xl ${view === l.id ? 'bg-white/10 text-[#E2C16B]' : 'hover:bg-white/5 text-white'}`}
             >
               {l.label}
             </button>
@@ -571,8 +570,7 @@ function Header({ scrolled, view, navTo, goHomeAndScroll, startApplication, mobi
             <button
               key={l.id}
               onClick={l.action}
-              className={`px-4 py-2 text-sm font-bold transition-all rounded-xl ${view === l.id ? 'bg-white/5' : 'hover:bg-white/5 text-white'}`}
-              style={{ color: view === l.id ? GOLD_LIGHT : 'white' }}
+              className={`px-4 py-2 text-sm font-bold transition-all rounded-xl ${view === l.id ? 'bg-white/10 text-[#E2C16B]' : 'hover:bg-white/5 text-white'}`}
             >
               {l.label}
             </button>
@@ -635,9 +633,9 @@ function ScrollReveal({
 
   useEffect(() => {
     const element = ref.current;
-
     if (!element) return;
 
+    // Use a very low threshold and no negative margin to ensure it triggers on mobile/short screens
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -646,13 +644,12 @@ function ScrollReveal({
         }
       },
       {
-        threshold: 0.15,
-        rootMargin: "0px 0px -80px 0px"
+        threshold: 0.01,
+        rootMargin: "0px"
       }
     );
 
     observer.observe(element);
-
     return () => observer.disconnect();
   }, []);
 
