@@ -261,7 +261,7 @@ function PrimaryButton({ children, onClick, className = "", type = "button", ful
   return (
     <button type={type} onClick={onClick} disabled={disabled}
       className={`${full ? "w-full" : ""} inline-flex items-center justify-center gap-2 px-6 py-2 rounded-xl font-semibold text-white transition-transform duration-150 hover:-translate-y-0.5 active:translate-y-0 ${className} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
-      style={{ backgroundColor: TEAL, boxShadow: "0 8px 20px -8px rgba(14,154,135,0.55)" }}
+      style={{ backgroundColor: TEAL, boxShadow: "0 8px 20px -8px rgba(184,134,46,0.35)" }}
       onMouseEnter={e => e.currentTarget.style.backgroundColor = TEAL_DARK}
       onMouseLeave={e => e.currentTarget.style.backgroundColor = TEAL}>
       {children}
@@ -440,6 +440,7 @@ export default function App() {
       </div>
 
       <FloatingContactBar />
+      <SmartChatBot />
 
       <main>
         {view === "home" && <HomeView navTo={navTo} startApplication={startApplication} goHomeAndScroll={goHomeAndScroll} />}
@@ -459,22 +460,299 @@ export default function App() {
   );
 }
 
+/* ------------------------------- Smart Bot -------------------------------- */
+function SmartChatBot() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [isTyping, setIsTyping] = useState(false);
+  const [options, setOptions] = useState([]);
+  const [currentStep, setCurrentStep] = useState("start");
+  const chatRef = useRef(null);
+  const inputRef = useRef(null);
+
+  const botResponses = {
+    start: {
+      text: "Namaste! 🙏 I'm your MANDANI ASSOCIATE AI Assistant. How can I help you achieve your financial goals today?",
+      options: [
+        { label: "Check Loan Eligibility", next: "eligibility" },
+        { label: "Reduce Current Interest", next: "savings" },
+        { label: "View Loan Types", next: "loans" },
+        { label: "Talk to Human Expert", next: "expert" }
+      ]
+    },
+    eligibility: {
+      text: "Great! To give you an estimate, what is your Monthly take-home salary?",
+      options: [
+        { label: "Below ₹25k", next: "low_income" },
+        { label: "₹25k - ₹50k", next: "contact_form" },
+        { label: "Above ₹50k", next: "contact_form" }
+      ]
+    },
+    low_income: {
+      text: "For income below ₹25k, eligibility depends on the lender. Would you like our expert to call you and find a match?",
+      options: [
+        { label: "Yes, Call Me", next: "contact_form" },
+        { label: "No, Back to Main", next: "start" }
+      ]
+    },
+    savings: {
+      text: "Smart move! 📉 We can help you transfer your loan to a lower ROI. Are you paying more than 9% interest currently?",
+      options: [
+        { label: "Yes, I'm paying more", next: "contact_form" },
+        { label: "Not sure", next: "contact_form" }
+      ]
+    },
+    loans: {
+      text: "We specialize in Home, Business, Machinery, and Mortgage loans with 30+ banks. Which one interests you?",
+      options: LOAN_CATEGORIES.map(c => ({ label: c.name, next: "contact_form" }))
+    },
+    expert: {
+      text: "Our experts are available from 10 AM to 7 PM. Leave your number and we will call you within 15 minutes.",
+      options: [
+        { label: "Leave My Number", next: "contact_form" }
+      ]
+    },
+    contact_form: {
+      text: "Perfect! Please share your 10-digit mobile number so I can assign a senior consultant to your file.",
+      isInput: true
+    },
+    final: {
+      text: "Thank you! Your request is registered. A Mandani Associate expert will contact you shortly. Have a great day! ✨",
+      options: [{ label: "Restart Chat", next: "start" }]
+    }
+  };
+
+  const triggerBot = async (key) => {
+    setIsTyping(true);
+    setOptions([]);
+    setCurrentStep(key);
+    await new Promise(r => setTimeout(r, 1000));
+
+    const response = botResponses[key];
+    setMessages(prev => [...prev, { text: response.text, sender: "bot" }]);
+    setIsTyping(false);
+
+    if (response.options) {
+      setOptions(response.options);
+    }
+    if (response.isInput) {
+      setOptions([{ label: "Submit Number", type: "input" }]);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen && messages.length === 0) {
+      triggerBot("start");
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
+  }, [messages, isTyping]);
+
+  const handleOptionClick = (option) => {
+    setMessages(prev => [...prev, { text: option.label, sender: "user" }]);
+    triggerBot(option.next || "contact_form");
+  };
+
+  const handleSendText = async () => {
+    const text = inputRef.current?.value.trim();
+    if (!text) return;
+    inputRef.current.value = "";
+    setMessages(prev => [...prev, { text: text, sender: "user" }]);
+
+    // Logic to save to Supabase if it looks like a phone number or if we are at contact_form step
+    if (currentStep === "contact_form" || text.match(/^\d{10}$/)) {
+      try {
+        // Collect chat history for context
+        const history = messages.map(m => `${m.sender}: ${m.text}`).join(" | ");
+
+        await supabase
+          .from("loan_requests") // Using existing table
+          .insert([{
+            full_name: "ChatBot Lead",
+            phone: text.match(/\d{10}/)?.[0] || "No number",
+            message: `Chat History: ${history.slice(-400)} | User Input: ${text}`,
+            loan_type: "Other",
+            city: "Surat",
+            terms_accepted: true
+          }]);
+      } catch (err) {
+        console.error("ChatBot Supabase Error:", err);
+      }
+      triggerBot("final");
+    } else if (text.toLowerCase().includes("loan") || text.toLowerCase().includes("eligibility")) {
+      triggerBot("eligibility");
+    } else if (text.toLowerCase().includes("interest") || text.toLowerCase().includes("save")) {
+      triggerBot("savings");
+    } else {
+      triggerBot("contact_form");
+    }
+  };
+
+  return (
+    <div className="fixed left-6 bottom-8 z-[100] font-body">
+      {/* Bot Window */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8, y: 100 }}
+        animate={{ opacity: isOpen ? 1 : 0, scale: isOpen ? 1 : 0.8, y: isOpen ? 0 : 100 }}
+        className={`absolute bottom-20 left-0 w-[320px] sm:w-[360px] h-[500px] bg-white rounded-[2rem] shadow-2xl border border-slate-100 overflow-hidden flex flex-col pointer-events-${isOpen ? 'auto' : 'none'}`}
+      >
+        {/* Header */}
+        <div className="bg-[#0B1F3A] p-5 flex items-center justify-between text-white">
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center border-2 border-white/20 overflow-hidden">
+                <img src="/mandanilogo.png" className="w-10 h-10 object-contain" alt="Bot Logo" />
+              </div>
+              <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-[#0B1F3A]" />
+            </div>
+            <div>
+              <p className="text-sm font-bold uppercase tracking-wide">MANDANI ASSOCIATE</p>
+              <p className="text-[10px] text-green-400 font-medium">Active Assistant 24/7</p>
+            </div>
+          </div>
+          <button onClick={() => setIsOpen(false)} className="w-8 h-8 rounded-full hover:bg-white/10 flex items-center justify-center transition-colors">
+            <ChevronDown />
+          </button>
+        </div>
+
+        {/* Messages */}
+        <div ref={chatRef} className="flex-1 overflow-y-auto p-5 space-y-4 bg-slate-50/50">
+          {messages.map((m, i) => (
+            <motion.div
+              initial={{ opacity: 0, x: m.sender === 'bot' ? -10 : 10 }}
+              animate={{ opacity: 1, x: 0 }}
+              key={i}
+              className={`flex ${m.sender === 'bot' ? 'justify-start' : 'justify-end'}`}
+            >
+              <div className={`max-w-[85%] p-3.5 rounded-2xl text-sm leading-relaxed shadow-sm ${
+                m.sender === 'bot'
+                  ? 'bg-white text-slate-700 rounded-tl-none border border-slate-100'
+                  : 'bg-[#0B1F3A] text-white rounded-tr-none'
+              }`}>
+                {m.text}
+              </div>
+            </motion.div>
+          ))}
+          {isTyping && (
+            <div className="flex justify-start">
+              <div className="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-100 flex gap-1">
+                <span className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce" />
+                <span className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce [animation-delay:0.2s]" />
+                <span className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce [animation-delay:0.4s]" />
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Interactive Footer */}
+        <div className="p-4 bg-white border-t border-slate-100">
+          <div className="flex flex-wrap gap-2 mb-3">
+            {options.filter(opt => opt.type !== 'input').map((opt, i) => (
+              <button
+                key={i}
+                onClick={() => handleOptionClick(opt)}
+                className="bg-amber-50 text-amber-700 border border-amber-200/50 px-4 py-2 rounded-xl text-xs font-bold hover:bg-amber-100 transition-all active:scale-95"
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <input
+              ref={inputRef}
+              placeholder="Type your answer..."
+              className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-sm outline-none focus:border-amber-500"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSendText();
+                }
+              }}
+            />
+            <button
+              onClick={handleSendText}
+              className="w-10 h-10 rounded-xl bg-[#0B1F3A] text-white flex items-center justify-center shadow-lg active:scale-95 transition-transform"
+            >
+               <Send size={16} />
+            </button>
+          </div>
+        </div>
+      </motion.div>
+
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`w-14 h-14 rounded-full flex items-center justify-center text-white shadow-2xl transition-all duration-300 active:scale-95 group relative ${isOpen ? 'bg-slate-900 rotate-90' : 'bg-white border-2 border-amber-500 hover:scale-110 animate-bounce-subtle'}`}
+      >
+        {isOpen ? <X size={24} className="text-white" /> : <img src="/mandanilogo.png" className="w-10 h-10 object-contain p-1" alt="Chat Logo" />}
+        {!isOpen && (
+          <div className="absolute right-full mr-4 bg-slate-900 text-white text-[10px] font-bold py-2 px-3 rounded-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest pointer-events-none">
+            24/7 AI Advisor
+          </div>
+        )}
+      </button>
+    </div>
+  );
+}
+
 /* ------------------------------- Top strip -------------------------------- */
 function FloatingContactBar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowTooltip(true);
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, []);
+
   const actions = [
     { icon: Phone, href: "tel:+916352243073", color: "bg-blue-600", label: "Call Us" },
-    { icon: MessageCircle, href: "https://wa.me/916352243073", color: "bg-green-500", label: "WhatsApp" },
+    {
+      icon: MessageCircle,
+      href: "https://wa.me/916352243073?text=Hi%20Mandani%20Associate,%20I%20want%20a%20loan.%20Can%20you%20please%20guide%20me?",
+      color: "bg-green-500",
+      label: "WhatsApp"
+    },
     { icon: Instagram, href: "https://www.instagram.com/mandani_associate/", color: "bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500", label: "Instagram" },
     { icon: Facebook, href: "https://www.instagram.com/mandani_associate/", color: "bg-[#1877F2]", label: "Facebook" },
   ];
 
   return (
     <div
-      onMouseEnter={() => setIsOpen(true)}
+      onMouseEnter={() => { setIsOpen(true); setShowTooltip(false); }}
       onMouseLeave={() => setIsOpen(false)}
       className="fixed right-4 bottom-8 z-[100] flex flex-col gap-2.5 items-center"
     >
+      {/* Welcome Message Popup */}
+      {!isOpen && showTooltip && (
+        <motion.div
+          initial={{ opacity: 0, y: 10, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          className="absolute bottom-full mb-4 right-0"
+        >
+          <div className="bg-white rounded-2xl shadow-2xl p-4 border border-slate-100 min-w-[200px] relative">
+            <button
+              onClick={(e) => { e.stopPropagation(); setShowTooltip(false); }}
+              className="absolute -top-2 -right-2 w-6 h-6 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 shadow-sm"
+            >
+              <X size={12} />
+            </button>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white shrink-0 shadow-lg shadow-green-500/20">
+                <MessageCircle size={20} fill="currentColor" />
+              </div>
+              <div className="text-left">
+                <p className="text-[10px] font-bold text-green-600 uppercase tracking-widest leading-none mb-1">Online Now</p>
+                <p className="text-xs font-bold text-slate-700 leading-tight">Need help with a loan?</p>
+              </div>
+            </div>
+            <div className="absolute top-full right-5 w-4 h-4 bg-white border-r border-b border-slate-100 rotate-45 -translate-y-2" />
+          </div>
+        </motion.div>
+      )}
+
       {isOpen && actions.map((a, i) => (
         <motion.a
           initial={{ opacity: 0, scale: 0, y: 20 }}
@@ -494,7 +772,7 @@ function FloatingContactBar() {
       ))}
 
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => { setIsOpen(!isOpen); setShowTooltip(false); }}
         className={`${isOpen ? 'bg-slate-900 shadow-inner' : 'bg-[#0B1F3A] shadow-2xl'} w-11 h-11 rounded-full flex items-center justify-center text-white hover:scale-110 active:scale-95 transition-all relative border-4 border-white/10`}
       >
         {isOpen ? <X size={20} /> : <MessageCircle size={20} fill="currentColor" />}
@@ -565,7 +843,7 @@ function Header({ scrolled, view, navTo, goHomeAndScroll, startApplication, mobi
             <button
               key={l.id}
               onClick={l.action}
-              className={`px-4 py-2 text-sm font-bold transition-all rounded-xl ${view === l.id ? 'bg-white/5' : 'hover:bg-white/5 text-white'}`}
+              className={`px-4 py-2 text-sm font-bold transition-all rounded-xl ${view === l.id ? 'bg-white/20' : 'hover:bg-white/10 text-white'}`}
               style={{ color: view === l.id ? GOLD_LIGHT : 'white' }}
             >
               {l.label}
@@ -578,7 +856,7 @@ function Header({ scrolled, view, navTo, goHomeAndScroll, startApplication, mobi
             <button
               key={l.id}
               onClick={l.action}
-              className={`px-4 py-2 text-sm font-bold transition-all rounded-xl ${view === l.id ? 'bg-white/5' : 'hover:bg-white/5 text-white'}`}
+              className={`px-4 py-2 text-sm font-bold transition-all rounded-xl ${view === l.id ? 'bg-white/20' : 'hover:bg-white/10 text-white'}`}
               style={{ color: view === l.id ? GOLD_LIGHT : 'white' }}
             >
               {l.label}
@@ -1033,8 +1311,11 @@ function HappyCustomersSection() {
   ];
 
   return (
-    <section className="py-12 relative overflow-hidden bg-slate-900">
-      {/* Decorative blurred blobs */}
+<section
+  className="py-12 relative overflow-hidden bg-cover bg-center"
+  style={{ backgroundImage: "url('/front.png')" }}
+>
+    {/* Decorative blurred blobs */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-amber-500/10 blur-[100px] -translate-x-1/2 -translate-y-1/2" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500/10 blur-[100px] translate-x-1/2 translate-y-1/2" />
 
@@ -1176,15 +1457,18 @@ function Hero({ navTo, goHomeAndScroll }) {
   const emi = calcEMI(amt, rate, years);
 
   return (
-    <section className="relative overflow-hidden min-h-[525px] flex items-center bg-[#0B1F3A] pt-32">
-      {/* Dynamic Background */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src="https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?auto=format&fit=crop&w=1600&q=80"
-          alt="Business Handshake"
-          className="w-full h-full object-cover"
-          style={{ opacity: 1.0 }}
-        />
+<section className="relative overflow-hidden min-h-[580px] flex items-center bg-[#0B1F3A] pt-8">
+    <div className="absolute inset-0 z-0">
+       <video
+         autoPlay
+         muted
+         loop
+         playsInline
+         className="w-full h-full object-cover  object-center scale-100"
+         style={{ opacity: 10 }} // Adjust opacity to make text readable
+       >
+         <source src="fb.mp4" type="video/mp4" />
+       </video>
         <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F3A]/90 via-[#0B1F3A]/70 to-transparent" />
         <div className="absolute inset-0 opacity-[0.05]" style={{
           backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)", backgroundSize: "32px 32px"
@@ -1204,8 +1488,9 @@ function Hero({ navTo, goHomeAndScroll }) {
           </h1>
 
           <p className="text-white text-lg sm:text-xl leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-12 font-medium">
-            MANDANI ASSOCIATE connects you with 30+ leading banks to find the perfect loan match. Expert guidance, zero hidden charges.
-          </p>
+           MANDANI ASSOCIATE connects you with 30+ leading banks to secure the perfect loan.
+
+            Our Surat-based advisory team helps individuals and businesses compare rates and get approved faster.          </p>
 
           <div className="flex flex-wrap justify-center lg:justify-start gap-5 mb-16">
             <ScrollReveal direction="left" delay={0.4}>
@@ -1238,7 +1523,7 @@ function Hero({ navTo, goHomeAndScroll }) {
 
         {/* Floating EMI Card */}
         <div className="fade-up max-w-xl mx-auto lg:mx-0 w-full" style={{ animationDelay: "0.2s" }}>
-        <div className="bg-white/55 backdrop-blur-xl rounded-[2.5rem] p-8 sm:p-10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.4)] border border-white/25">
+        <div className="bg-white/50 backdrop-blur-l rounded-[2.5rem] p-8 sm:p-10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.4)] border border-white/25">
             <div className="flex items-center justify-between mb-10">
               <div>
                 <h3 className="text-xl font-bold text-slate-900 mb-1">Quick Preview</h3>
@@ -1332,7 +1617,7 @@ function LoanCategoriesSection({ startApplication }) {
 
                     <button
                       onClick={() => startApplication(cat.name)}
-                      className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-2xl font-bold text-xs sm:text-sm transition-all duration-300 bg-slate-50 text-slate-700 hover:bg-[#0B1F3A] hover:text-white hover:shadow-xl mt-auto border border-slate-100"
+                      className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-2xl font-bold text-sm transition-all duration-300 bg-[#E2C16B] text-[#0B1F3A] hover:bg-[#0B1F3A] hover:text-white hover:shadow-xl mt-auto border-none shadow-md"
                     >
                       Apply Now <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
                     </button>
@@ -1673,7 +1958,7 @@ function FAQSection() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {FAQS.slice(0, 6).map((f, i) => (
             <ScrollReveal key={i} direction={i % 2 === 0 ? "left" : "right"} delay={i * 0.05}>
-              <div className="bg-white/45 backdrop-blur-sm p-8 rounded-[2rem] border-2 border-slate-300/85 shadow-xl shadow-slate-200/20 hover:border-amber-500/30 hover:bg-white hover:shadow-2xl transition-all duration-300 h-full">
+              <div className="bg-white p-8 rounded-[2.5rem] border-2 border-slate-300/85 shadow-xl shadow-slate-200/20 hover:border-amber-500/30 hover:bg-white hover:shadow-2xl transition-all duration-300 h-full">
                 <h3 className="text-lg font-bold mb-4" style={{ color: "#1D4E89" }}>{f.q}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed">{f.a}</p>
               </div>
@@ -1787,7 +2072,7 @@ function ContactSection() {
 
             <div className="space-y-5 mb-10">
               {/* Call Us */}
-              <div className="bg-white/45 backdrop-blur-sm rounded-2xl p-5 border-2 border-slate-200/60 shadow-xl flex items-start gap-4 transition-all hover:border-amber-500/30">
+              <div className="bg-white rounded-2xl p-5 border-2 border-slate-200/60 shadow-xl flex items-start gap-4 transition-all hover:border-amber-500/30">
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: "rgba(14,154,135,0.1)" }}>
                   <Phone size={18} style={{ color: TEAL }} />
                 </div>
@@ -1799,7 +2084,7 @@ function ContactSection() {
               </div>
 
               {/* Our Office */}
-              <div className="bg-white/45 backdrop-blur-sm rounded-2xl p-5 border-2 border-slate-200/60 shadow-xl flex items-start gap-4 transition-all hover:border-amber-500/30">
+              <div className="bg-white rounded-2xl p-5 border-2 border-slate-200/60 shadow-xl flex items-start gap-4 transition-all hover:border-amber-500/30">
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: "rgba(14,154,135,0.1)" }}>
                   <MapPin size={18} style={{ color: TEAL }} />
                 </div>
@@ -1813,7 +2098,7 @@ function ContactSection() {
               </div>
 
               {/* Follow Us */}
-              <div className="bg-white/45 backdrop-blur-sm rounded-2xl p-5 border-2 border-slate-200/60 shadow-xl flex items-center gap-4 justify-between transition-all hover:border-amber-500/30">
+              <div className="bg-white rounded-2xl p-5 border-2 border-slate-200/60 shadow-xl flex items-center gap-4 justify-between transition-all hover:border-amber-500/30">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: "rgba(14,154,135,0.1)" }}>
                     <MessageCircle size={18} style={{ color: TEAL }} />
