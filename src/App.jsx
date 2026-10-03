@@ -5055,11 +5055,11 @@ function LoanDetailsView({ loanId, navTo }) {
   // Home loan profiles
   const homeSalaried = [
     "Adhar Card", "Pan Card", "Form no 16 (for the last 2 years)", "12 month credited sallary statement",
-    "Rent Agreement or sale Deed", "6 months sallary slip", "All current loan statements with sanction latter",
+    "Satakhat (Agreement for Sale)", "6 months sallary slip", "All current loan statements with sanction latter",
     "Current adress light bill/vera bill"
   ];
   const homeBusiness = [
-    "Adhar Card", "Pan Card", "Udhyam Registration Certificate", "GST Registration & Returns", "12-Month Current/Business Bank Account Statement", "Rent Agreement or sale Deed",
+    "Adhar Card", "Pan Card", "Udhyam Registration Certificate", "GST Registration & Returns", "12-Month Current/Business Bank Account Statement", "Satakhat (Agreement for Sale)",
     "All current loan statements with sanction latter", "Current address light bill/vera bill"
   ];
 
