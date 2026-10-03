@@ -52,7 +52,7 @@ const LOAN_CATEGORIES = [
   { id: "personal", name: "CC / OD", icon: Wallet, rate: "7.5% – 15%",
        img: "https://images.unsplash.com/photo-1589758438368-0ad531db3366?auto=format&fit=crop&w=800&q=80",
     points: [  "Working capital facility","Flexible cash withdrawal","Business cash-flow support"],
-    eligibility: ["Business age: 2+ years", "GST registration", "Regular bank conduct", "Min. turnover criteria"] },
+    eligibility: ["Business age: 2+ years", "GST registration", "Regular bank conduct", "Min. turnover 1 Cr+"] },
   { id: "education", name: "Education Loan", icon: GraduationCap, rate: "6% – 10%",
       img: "/edu.jpg",
     points: ["Higher education", "Domestic & international studies","Flexible cash withdrawal"],
