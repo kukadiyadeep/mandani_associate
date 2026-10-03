@@ -40,7 +40,7 @@ const LOAN_CATEGORIES = [
   { id: "machinery", name: "Machinery Loan", icon: Settings, rate: "7% – 13%",
     img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80",
     points: ["Industrial equipment", "Medical machinery", "Manufacturing tools"],
-    eligibility: ["Business age: 3+ years", "Profitable for last 2 yrs", "Good credit score", "MSME registration preferred"] },
+    eligibility: ["Business age: New Firm or Old Firm", "Profitable for last 2 yrs", "Good credit score", "MSME registration preferred"] },
   { id: "business", name: "Business Loan", icon: Briefcase, rate: "8% – 17%",
     img: "/buissness.png",
     points: ["Business expansion", "Working capital", "Equipment financing"],
@@ -5040,12 +5040,12 @@ function LoanDetailsView({ loanId, navTo }) {
 
   // Machinery docs
   const machineryDocs = [
-    "PAN Card", "Aadhaar Card", "2 Passport-size Photos",
+    "PAN Card", "Aadhaar Card", "Passport-size Photos",
     "Last 3 Years’ ITR and Audit Reports (if applicable)",
     "GST Certificate", "Udyam Aadhaar",
     "Savings Bank Account Statement (Last 1 year / up to today)",
     "Current Bank Account Statement (Last 1 year / up to today)",
-    "ITR ID & Password", "GST ID & Password", "Rent Agreement",
+    "ITR ID & Password", "GST ID & Password", "Rent Agreement or sale Deed",
     "House Electricity Bill and Property Tax Bill",
     "If any other loan is currently running: Sanction Letter and Loan Statement (from the date the loan was taken up to today)",
     "Business Photo with the Board and Stock Photo",
