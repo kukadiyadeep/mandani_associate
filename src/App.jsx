@@ -4264,7 +4264,7 @@ function DocumentsView({ navTo, goHomeAndScroll, setSelectedLoanId }) {
       <section className="max-w-[1400px] mx-auto px-6 lg:px-10 py-24 -mt-12 relative z-20">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {LOAN_CATEGORIES.map((loan, idx) => {
+            {LOAN_CATEGORIES.filter(loan => loan.id !== 'business' && loan.id !== 'education').map((loan, idx) => {
               return (
                 <ScrollReveal key={loan.id} direction={idx % 2 === 0 ? "left" : "right"} delay={idx * 0.05}>
                   <div className="bg-white/55 backdrop-blur-sm rounded-[2.5rem] border-2 border-slate-200/60 transition-all duration-500 overflow-hidden flex flex-col shadow-lg hover:shadow-2xl hover:border-amber-500/30 group">
