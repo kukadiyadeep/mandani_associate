@@ -8,7 +8,7 @@ import {
   ArrowRight, TrendingUp, Search, LayoutDashboard, Bell, LogOut, FileText,
   User, Settings, HelpCircle, BarChart3, SlidersHorizontal, Landmark,
   MessageCircle, ArrowLeft, UploadCloud, AlertTriangle, ChevronUp, Layers, Hourglass, ChevronLeft,
-  Facebook, Instagram, Send, IndianRupee, Share2, Zap, Scale, ExternalLink
+  Facebook, Instagram, Send, IndianRupee, Share2, Zap, Scale, ExternalLink, Sun, Sparkles, Award
 } from "lucide-react";
 import {
   PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RTooltip,
@@ -417,7 +417,22 @@ export default function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => { window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" }); }, [view]);
+  useEffect(() => {
+    const seoTitles = {
+      home: "Best Loan Consultant in Surat | MANDANI ASSOCIATE – Home, Business & Machinery Loans",
+      subsidy: "Gujarat MSME & Solar Loan Subsidies in Surat | MANDANI ASSOCIATE",
+      emi: "Loan EMI Calculator Surat | Check Monthly EMI & Amortization | MANDANI ASSOCIATE",
+      eligibility: "Check Loan Eligibility Surat | Free Assessment | MANDANI ASSOCIATE",
+      apply: "Apply for Loan Online Surat | Fast Approval | MANDANI ASSOCIATE",
+      about: "About Mandani Associate | Trusted Financial Consultancy Varachha Surat",
+      documents: "Required Loan Documents Checklist Surat | MANDANI ASSOCIATE",
+      cibil: "Free CIBIL Score Check & Guidance Surat | MANDANI ASSOCIATE",
+      track: "Track Loan Application Status | MANDANI ASSOCIATE",
+      legal: "Legal Terms & Privacy Policy | MANDANI ASSOCIATE Surat"
+    };
+    document.title = seoTitles[view] || "Best Loan Consultant in Surat | MANDANI ASSOCIATE";
+    window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+  }, [view]);
 
   const goHomeAndScroll = (id) => {
     setView("home");
@@ -449,9 +464,10 @@ export default function App() {
         @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap');
         .font-display{ font-family:'Fraunces', Georgia, serif; }
         .font-body{ font-family:'Inter', system-ui, sans-serif; }
-        input[type=range]{ -webkit-appearance:none; appearance:none; height:6px; border-radius:999px; background:#E2E8F0; }
-        input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none; width:18px; height:18px; border-radius:999px; background:${TEAL}; border:3px solid white; box-shadow:0 1px 4px rgba(0,0,0,0.35); cursor:pointer; margin-top:-6px; }
-        input[type=range]::-moz-range-thumb{ width:18px; height:18px; border-radius:999px; background:${TEAL}; border:3px solid white; box-shadow:0 1px 4px rgba(0,0,0,0.35); cursor:pointer; }
+        .recharts-wrapper, .recharts-surface, .recharts-sector, .recharts-pie-sector { outline: none !important; }
+        input[type=range]{ -webkit-appearance:none; appearance:none; height:8px; border-radius:999px; background:#E2E8F0; }
+        input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none; width:22px; height:22px; border-radius:999px; background:#F59E0B; border:4px solid white; box-shadow:0 2px 8px rgba(0,0,0,0.3); cursor:pointer; margin-top:-7px; opacity:1 !important; }
+        input[type=range]::-moz-range-thumb{ width:22px; height:22px; border-radius:999px; background:#F59E0B; border:4px solid white; box-shadow:0 2px 8px rgba(0,0,0,0.3); cursor:pointer; opacity:1 !important; }
         .card-hover{ transition: transform .2s ease, box-shadow .2s ease; }
         .card-hover:hover{ transform: translateY(-4px); box-shadow: 0 20px 30px -18px rgba(11,31,58,0.25); }
         @keyframes fadeUp{ from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);} }
@@ -576,7 +592,8 @@ export default function App() {
       <main>
         {view === "home" && <HomeView navTo={navTo} startApplication={startApplication} goHomeAndScroll={goHomeAndScroll} />}
         {view === "track" && <TrackerView navTo={navTo} />}
-        {view === "emi" && <EMICalculatorView startApplication={startApplication} goHomeAndScroll={goHomeAndScroll} />}
+        {view === "subsidy" && <SubsidyView navTo={navTo} startApplication={startApplication} goHomeAndScroll={goHomeAndScroll} />}
+        {view === "emi" && <EMICalculatorView startApplication={startApplication} goHomeAndScroll={goHomeAndScroll} navTo={navTo} />}
         {view === "eligibility" && <EligibilityView navTo={navTo} startApplication={startApplication} goHomeAndScroll={goHomeAndScroll} />}
         {view === "apply" && <ApplyView prefill={applyPrefill} addApplication={addApplication} navTo={navTo} />}
         {view === "about" && <AboutView navTo={navTo} goHomeAndScroll={goHomeAndScroll} />}
@@ -983,7 +1000,7 @@ function FloatingContactBar() {
       label: "WhatsApp"
     },
     { icon: Instagram, href: "https://www.instagram.com/mandani_associate/", color: "bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500", label: "Instagram" },
-    { icon: Facebook, href: "https://www.instagram.com/mandani_associate/", color: "bg-[#1877F2]", label: "Facebook" },
+    { icon: Facebook, href: "https://www.facebook.com/share/1DNBYgpQWb/", color: "bg-[#1877F2]", label: "Facebook" },
   ];
 
   return (
@@ -1043,6 +1060,7 @@ function Header({ scrolled, view, navTo, goHomeAndScroll, startApplication, mobi
   const links = [
     { id: 'home', label: "Home", action: () => { window.scrollTo({ top: 0, behavior: "smooth" }); navTo("home"); } },
     { id: 'loans', label: "Loans", action: () => goHomeAndScroll("loans") },
+    { id: 'subsidy', label: "Subsidy", action: () => navTo("subsidy") },
     { id: 'emi', label: "EMI Calculator", action: () => navTo("emi") },
     { id: 'cibil', label: "CIBIL", action: () => navTo("cibil") },
     { id: 'about', label: "About Us", action: () => navTo("about") },
@@ -1223,6 +1241,8 @@ function HomeView({ navTo, startApplication, goHomeAndScroll }) {
         goHomeAndScroll={goHomeAndScroll}
       />
 
+      <ShipVideoGap />
+
       <AboutTeaserSection goHomeAndScroll={goHomeAndScroll} />
 
       <BankPartnersSection />
@@ -1262,15 +1282,28 @@ function AboutTeaserSection({ goHomeAndScroll }) {
   ];
 
   return (
-    <section className="relative pt-10 pb-20 bg-white">
+    <section className="relative pt-0 pb-20 bg-white">
       {/* Background Image Cozntainer */}
-      <div className="relative h-[250px] sm:h-[350px] w-full overflow-hidden mb-[-100px] sm:mb-[-150px]">
+      <div className="relative h-[250px] sm:h-[450px] w-full overflow-hidden mb-[-100px] sm:mb-[-150px]">
+        {/* Top Wave Transition */}
+        <div className="absolute top-0 left-0 w-full leading-[0] z-20 pointer-events-none -translate-y-[1px]">
+          <svg viewBox="0 0 1440 120" preserveAspectRatio="none" fill="white" xmlns="http://www.w3.org/2000/svg" className="w-full h-[40px] sm:h-[80px] rotate-180">
+            <path d="M0,120V40C480,120 960,-40 1440,40V120Z"></path>
+          </svg>
+        </div>
         <img
           src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=80"
           alt="Office Background"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-slate-900/30" />
+
+        {/* Bottom Wave Transition */}
+        <div className="absolute bottom-0 left-0 w-full leading-[0] z-20 pointer-events-none translate-y-[1px]">
+          <svg viewBox="0 0 1440 120" preserveAspectRatio="none" fill="white" xmlns="http://www.w3.org/2000/svg" className="w-full h-[40px] sm:h-[80px]">
+            <path d="M0,120V40C480,120 960,-40 1440,40V120Z"></path>
+          </svg>
+        </div>
 
         <div className="absolute top-1/2 left-0 w-full max-w-[1100px] px-6 lg:px-10 -translate-y-1/2">
           <ScrollReveal direction="left" delay={0.2}>
@@ -1285,11 +1318,11 @@ function AboutTeaserSection({ goHomeAndScroll }) {
       </div>
 
       {/* Overlapping Cards */}
-      <div className="relative z-10 max-w-[1100px] mx-auto px-6 lg:px-10">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="relative z-30 max-w-[1100px] mx-auto px-6 lg:px-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {cards.map((c, i) => (
-            <ScrollReveal key={i} direction={i % 2 === 0 ? "left" : "right"} delay={i * 0.05}>
-              <div className="bg-white p-8 shadow-2xl border-t-4 border-[#E2C16B] flex flex-col items-center text-center group hover:-translate-y-2 transition-transform duration-300 h-full">
+            <ScrollReveal key={i} direction={i % 2 === 0 ? "left" : "right"} delay={i * 0.05} className="h-full">
+              <div className="bg-white p-8 shadow-2xl border-t-4 border-[#E2C16B] flex flex-col items-center text-center group hover:-translate-y-2 transition-all duration-300 h-full">
                 <div className="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center mb-6 text-[#E2C16B] group-hover:bg-[#E2C16B] group-hover:text-white transition-colors duration-300">
                   <c.icon size={24} />
                 </div>
@@ -1693,14 +1726,81 @@ function BankPartnersSection() {
 
 
 function MiniSlider({ label, value, setValue, min, max, step, format }) {
+  const sliderRef = useRef(null);
+
+  useEffect(() => {
+    const el = sliderRef.current;
+    if (!el) return;
+
+    const handleWheel = (e) => {
+      if (Math.abs(e.deltaY) < 2) return;
+      e.preventDefault();
+      const speedMultiplier = 5;
+      const delta = e.deltaY > 0 ? -step * speedMultiplier : step * speedMultiplier;
+
+      setValue(prev => {
+        const newValue = Math.min(Math.max(prev + delta, min), max);
+        return newValue;
+      });
+    };
+
+    el.addEventListener('wheel', handleWheel, { passive: false });
+    return () => el.removeEventListener('wheel', handleWheel);
+  }, [min, max, step, setValue]);
+
   return (
     <div className="mb-4">
       <div className="flex items-center justify-between mb-1.5">
         <span className="text-xs font-bold text-slate-800">{label}</span>
         <span className="text-xs font-bold" style={{ color: NAVY }}>{format(value)}</span>
       </div>
-      <input type="range" min={min} max={max} step={step} value={value} onChange={e => setValue(Number(e.target.value))} className="w-full" />
+      <input
+        ref={sliderRef}
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={e => setValue(Number(e.target.value))}
+        className="w-full cursor-pointer"
+      />
     </div>
+  );
+}
+
+function ShipVideoGap() {
+  return (
+    <section className="relative -mt-[1px] w-full h-[260px] sm:h-[340px] overflow-hidden">
+
+      {/* Ship Video */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        className="absolute inset-0 w-full h-full object-cover scale-[1.25]"
+      >
+        <source src="shipvideo1.mp4" type="video/mp4" />
+      </video>
+
+      {/* Slight dark overlay */}
+      <div className="absolute inset-0 bg-black/10" />
+
+      {/* LOWER CURVE - Connects Video to White About */}
+      <div className="absolute bottom-0 left-0 w-full leading-[0] z-20 pointer-events-none translate-y-[1px]">
+        <svg
+          viewBox="0 0 1440 120"
+          preserveAspectRatio="none"
+          fill="white"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full h-[40px] sm:h-[80px]"
+        >
+          <path d="M0,120V40C480,120 960,-40 1440,40V120Z"></path>
+        </svg>
+      </div>
+
+    </section>
   );
 }
 
@@ -1718,9 +1818,9 @@ function Hero({ navTo, goHomeAndScroll }) {
          muted
          loop
          playsInline
-         className="w-full h-full object-cover  object-center scale-100"
-         style={{ opacity: 10 }} // Adjust opacity to make text readable
-       >
+className="absolute inset-0 w-full h-full object-cover"
+style={{ opacity: 0.4 }}
+>
          <source src="fb.mp4" type="video/mp4" />
        </video>
         <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F3A]/90 via-[#0B1F3A]/70 to-transparent" />
@@ -1760,17 +1860,19 @@ function Hero({ navTo, goHomeAndScroll }) {
             </ScrollReveal>
           </div>
 
-          <div className="grid grid-cols-2 sm:flex items-center justify-center lg:justify-start gap-x-10 gap-y-6 border-t border-white/10 pt-2">
-            {[
-              { label: "Partner Banks", val: "30+" },
-              { label: "Happy Clients", val: "5000+" },
-              { label: "Success Rate", val: "98%" }
+<div className="grid grid-cols-2 sm:flex items-center justify-center lg:justify-start gap-x-12 sm:gap-x-16 gap-y-6 border-t border-white/10 pt-8 mt-12">
+  {[
+    { val: "30+", label: "Bank Partners" },
+    { val: "10K+", label: "Customers Guided" },
+    { val: "15+", label: "Loan Solutions" },
+    { val: "10+", label: "Years Experience" }
             ].map(s => (
-              <div key={s.label}>
-                <div className="text-2xl font-bold text-white mb-1">{s.val}</div>
-                <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">{s.label}</div>
+              <div key={s.label} className="text-left">
+                <div className="text-3xl sm:text-4xl font-bold text-white mb-1 tracking-tight">{s.val}</div>
+                <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.25em]">{s.label}</div>
               </div>
             ))}
+          </div>
           </div>
         </div>
 
@@ -1806,15 +1908,10 @@ function Hero({ navTo, goHomeAndScroll }) {
             </button>
           </div>
         </div>
-      </div>
 
-      {/* Decorative Wave Transition */}
-      <div className="absolute bottom-0 left-0 w-full leading-[0] z-20 pointer-events-none translate-y-[1px]">
-        <svg viewBox="0 0 1440 120" preserveAspectRatio="none" fill="white" xmlns="http://www.w3.org/2000/svg" className="w-full h-[60px] sm:h-[120px]">
-          <path d="M0,120V40C480,120 960,-40 1440,40V120Z"></path>
-        </svg>
-      </div>
-    </section>
+
+{/* Transition Waves removed to let videos meet cleanly */}
+  </section>
   );
 }
 
@@ -1889,6 +1986,404 @@ function LoanCategoriesSection({ startApplication }) {
         </div>
       </div>
     </section>
+  );
+}
+
+
+
+function ViksitGujaratPolicySection({ goHomeAndScroll }) {
+  return (
+    <div className="mb-20">
+      {/* Main Container Card */}
+      <div className="bg-[#0B1F3A] rounded-[2.5rem] sm:rounded-[3rem] p-6 sm:p-12 text-white border-2 border-[#E2C16B]/40 shadow-[0_30px_80px_rgba(11,31,58,0.25)] relative overflow-hidden">
+
+        {/* Ambient Glow & Grid Pattern Background */}
+        <div className="absolute inset-0 opacity-[0.07] pointer-events-none" style={{ backgroundImage: `radial-gradient(#E2C16B 1px, transparent 1px)`, backgroundSize: '32px 32px' }} />
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#E2C16B]/15 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute -bottom-40 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none" />
+
+        {/* Top Gold Bar */}
+        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-500 via-[#E2C16B] to-amber-600" />
+
+        {/* Header Title Section */}
+        <div className="text-center mb-12 relative z-10">
+          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#E2C16B]/10 border border-[#E2C16B]/30 text-[#E2C16B] text-xs font-bold uppercase tracking-widest mb-6 backdrop-blur-md">
+            <Landmark size={15} /> Official Policy Announcement
+          </div>
+
+          <h3 className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-4 drop-shadow-lg">
+            Viksit Gujarat Industrial Policy - 2026
+          </h3>
+
+          <div className="inline-flex items-center gap-2.5 bg-white/10 backdrop-blur-md px-6 py-2.5 rounded-full border border-white/20 text-xs sm:text-sm font-bold text-[#E2C16B] shadow-inner">
+            <Clock3 size={16} className="text-amber-400" /> Policy Period: <span className="text-white">01 June 2026 to 31 May 2031</span>
+          </div>
+        </div>
+
+        {/* 1. Eligible Enterprises */}
+        <div className="mb-14 relative z-10">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/30 shadow-md">
+              <Users size={20} />
+            </div>
+            <h4 className="text-xl sm:text-2xl font-bold text-white tracking-wide">Eligible Enterprises</h4>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Micro */}
+            <div className="bg-[#0A1A30]/80 border-2 border-emerald-500/40 rounded-3xl p-6 relative overflow-hidden group hover:border-emerald-400 hover:shadow-[0_10px_30px_rgba(16,185,129,0.15)] transition-all duration-300">
+              <div className="flex items-center justify-between mb-4">
+                <span className="px-4 py-1.5 rounded-xl bg-emerald-500 text-white font-black text-xs uppercase tracking-wider shadow-md">
+                  Micro
+                </span>
+                <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Plant & Machinery</span>
+              </div>
+              <p className="text-xs text-slate-300 font-medium mb-1">Investment up to</p>
+              <p className="font-display text-3xl sm:text-4xl font-extrabold text-emerald-400 tracking-tight">₹2.5 Cr.</p>
+            </div>
+
+            {/* Small */}
+            <div className="bg-[#0A1A30]/80 border-2 border-blue-500/40 rounded-3xl p-6 relative overflow-hidden group hover:border-blue-400 hover:shadow-[0_10px_30px_rgba(59,130,246,0.15)] transition-all duration-300">
+              <div className="flex items-center justify-between mb-4">
+                <span className="px-4 py-1.5 rounded-xl bg-blue-600 text-white font-black text-xs uppercase tracking-wider shadow-md">
+                  Small
+                </span>
+                <span className="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Plant & Machinery</span>
+              </div>
+              <p className="text-xs text-slate-300 font-medium mb-1">More than ₹2.5 Cr. up to</p>
+              <p className="font-display text-3xl sm:text-4xl font-extrabold text-blue-400 tracking-tight">₹25 Cr.</p>
+            </div>
+
+            {/* Medium */}
+            <div className="bg-[#0A1A30]/80 border-2 border-purple-500/40 rounded-3xl p-6 relative overflow-hidden group hover:border-purple-400 hover:shadow-[0_10px_30px_rgba(168,85,247,0.15)] transition-all duration-300">
+              <div className="flex items-center justify-between mb-4">
+                <span className="px-4 py-1.5 rounded-xl bg-purple-600 text-white font-black text-xs uppercase tracking-wider shadow-md">
+                  Medium
+                </span>
+                <span className="text-[10px] font-bold text-purple-300 uppercase tracking-widest">Plant & Machinery</span>
+              </div>
+              <p className="text-xs text-slate-300 font-medium mb-1">More than ₹25 Cr. up to</p>
+              <p className="font-display text-3xl sm:text-4xl font-extrabold text-purple-300 tracking-tight">₹125 Cr.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* 2. Flexible "Choose Your Incentive" Matrix Table */}
+        <div className="mb-14 relative z-10">
+          <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+            <h4 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2.5">
+              <SlidersHorizontal size={22} className="text-[#E2C16B]" /> "Choose Your Incentive" Matrix Table
+            </h4>
+            <span className="text-xs text-amber-300 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20 font-bold">
+              Taluka Classification Matrix
+            </span>
+          </div>
+
+          <div className="overflow-x-auto rounded-2xl border border-white/15 bg-[#0A1A30]/90 shadow-2xl">
+            <table className="w-full text-left border-collapse min-w-[650px]">
+              <thead>
+                <tr className="bg-white/10 text-[#E2C16B] text-xs font-black uppercase tracking-wider border-b border-white/15">
+                  <th className="p-4 sm:p-5">Incentive Component</th>
+                  <th className="p-4 sm:p-5">Category A Talukas (Underdeveloped)</th>
+                  <th className="p-4 sm:p-5">Category B Talukas (Developed/Urban Nodes)</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/10 text-xs sm:text-sm text-slate-200">
+                <tr className="hover:bg-white/5 transition-colors">
+                  <td className="p-4 sm:p-5 font-bold text-white flex items-center gap-2">
+                    <Wallet size={16} className="text-emerald-400" /> Capital Investment Subsidy
+                  </td>
+                  <td className="p-4 sm:p-5 text-emerald-300 font-semibold">
+                    35% of EFCI for Micro units; scaled up to 25% for Small/Medium
+                  </td>
+                  <td className="p-4 sm:p-5 text-slate-300 font-semibold">
+                    25% of EFCI for Micro units; scaled down to 10%–20% for others
+                  </td>
+                </tr>
+                <tr className="hover:bg-white/5 transition-colors">
+                  <td className="p-4 sm:p-5 font-bold text-white flex items-center gap-2">
+                    <TrendingUp size={16} className="text-blue-400" /> Term Loan Interest Subsidy
+                  </td>
+                  <td className="p-4 sm:p-5 text-blue-300 font-semibold">
+                    7% interest subvention p.a. for 5 to 7 yrs (Max ₹35 Lakhs/year)
+                  </td>
+                  <td className="p-4 sm:p-5 text-slate-300 font-semibold">
+                    6% interest subvention p.a. for 6 yrs (Max ₹30 Lakhs/year)
+                  </td>
+                </tr>
+                <tr className="hover:bg-white/5 transition-colors">
+                  <td className="p-4 sm:p-5 font-bold text-white flex items-center gap-2">
+                    <Zap size={16} className="text-purple-300" /> Power Tariff Support
+                  </td>
+                  <td className="p-4 sm:p-5 text-purple-300 font-semibold">
+                    ₹2 per unit electricity rebate for 5 years
+                  </td>
+                  <td className="p-4 sm:p-5 text-slate-300 font-semibold">
+                    ₹1 per unit electricity rebate for 5 years
+                  </td>
+                </tr>
+                <tr className="hover:bg-white/5 transition-colors bg-amber-500/10">
+                  <td className="p-4 sm:p-5 font-extrabold text-[#E2C16B]">
+                    Maximum Ceiling Cap
+                  </td>
+                  <td className="p-4 sm:p-5 font-extrabold text-amber-300">
+                    Capped at 45% of total machinery cost (EFCI)
+                  </td>
+                  <td className="p-4 sm:p-5 font-extrabold text-amber-300">
+                    Capped at 35% of total machinery cost (EFCI)
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* 3. Demographic & Thrust Sector Add-ons */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 relative z-10">
+          <div className="bg-[#0A1A30]/80 rounded-2xl p-6 border border-amber-500/30">
+            <div className="flex items-center gap-2.5 mb-3 text-amber-400">
+              <Award size={20} />
+              <h5 className="font-bold text-base text-white">Demographic Add-ons (+1% Extra)</h5>
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              An extra <strong className="text-amber-300">+1% interest subsidy</strong> is granted to units owned by <strong className="text-white">Women entrepreneurs</strong>, <strong className="text-white">Youth under 35 years</strong>, or <strong className="text-white">SC/ST entrepreneurs</strong>.
+            </p>
+          </div>
+
+          <div className="bg-[#0A1A30]/80 rounded-2xl p-6 border border-emerald-500/30">
+            <div className="flex items-center gap-2.5 mb-3 text-emerald-400">
+              <Sparkles size={20} />
+              <h5 className="font-bold text-base text-white">Thrust Sector Bonus (50% / 45% Ceiling)</h5>
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              For manufacturing <strong className="text-white">Drones, Robots, Toys, Footwear, or Sports Goods</strong>, the combined ceiling automatically increases to <strong className="text-emerald-300">50% in Category A</strong> and <strong className="text-emerald-300">45% in Category B</strong> across all enterprise scales.
+            </p>
+          </div>
+        </div>
+
+        {/* 4. CGTMSE Fee Reimbursement & Other Benefits */}
+        <div className="relative z-10 mb-12">
+          <h4 className="text-xl font-bold text-white mb-6 flex items-center gap-2.5">
+            <Star size={20} className="text-amber-400 fill-amber-400" /> Additional Policy Benefits
+          </h4>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-[#0A1A30]/80 rounded-2xl p-6 border border-white/15 shadow-md">
+              <p className="text-xs font-black text-amber-400 uppercase tracking-wider mb-2">CGTMSE Guarantee Waiver</p>
+              <p className="text-3xl font-extrabold text-emerald-400 mb-1">100% <span className="text-xs text-slate-300 font-medium">Reimbursement</span></p>
+              <p className="text-xs text-slate-300">Full waiver on annual credit guarantee fees for 5 years on collateral-free loans up to ₹2 Crores.</p>
+            </div>
+
+            <div className="bg-[#0A1A30]/80 rounded-2xl p-6 border border-white/15 shadow-md">
+              <p className="text-xs font-black text-amber-400 uppercase tracking-wider mb-2">Rent Assistance Subsidy</p>
+              <div className="space-y-1 text-xs text-slate-200 font-semibold mb-2">
+                <p>Male Entrepreneur: <span className="text-amber-300 font-bold">65% of Rent</span></p>
+                <p>Women Entrepreneur: <span className="text-amber-300 font-bold">75% of Rent</span></p>
+              </div>
+              <span className="text-[10px] text-slate-400 block font-medium">(Max Limit: ₹3 Lakhs Per Annum)</span>
+            </div>
+
+            <div className="bg-[#0A1A30]/80 rounded-2xl p-6 border border-white/15 shadow-md">
+              <p className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">Power Connection Support</p>
+              <p className="text-3xl font-extrabold text-white mb-1">35% <span className="text-xs text-slate-300 font-medium">Reimbursement</span></p>
+              <span className="text-[10px] text-slate-400 block font-medium">(Max Limit: ₹5 Lakhs)</span>
+            </div>
+          </div>
+        </div>
+
+        {/* 5. Machinery Conditions & Official Portal */}
+        <div className="bg-[#0A1A30]/90 rounded-2xl p-6 border border-white/15 relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="space-y-2">
+            <h5 className="text-sm font-bold uppercase tracking-widest text-[#E2C16B]">Machinery & Operational Conditions</h5>
+            <div className="flex items-start gap-2 text-xs text-slate-300">
+              <CheckCircle2 size={15} className="text-amber-400 flex-shrink-0 mt-0.5" />
+              <span>Only <strong className="text-white">brand-new plant & machinery</strong> qualify (Second-hand domestic excluded; imported second-hand accepted if 1st time imported).</span>
+            </div>
+            <div className="flex items-start gap-2 text-xs text-slate-300">
+              <CheckCircle2 size={15} className="text-amber-400 flex-shrink-0 mt-0.5" />
+              <span>Plant must remain in active production for at least <strong className="text-white">10 years</strong>.</span>
+            </div>
+          </div>
+          <button
+            onClick={() => goHomeAndScroll("contact")}
+            className="px-8 py-4 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-[#0B1F3A] font-black text-xs uppercase tracking-wider rounded-xl shadow-2xl transition-all active:scale-95 whitespace-nowrap"
+          >
+            Apply Under Policy Scheme
+          </button>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+function SolarLoanSubsidySection({ goHomeAndScroll }) {
+  return (
+    <div className="mb-20">
+      <div className="bg-[#0B1F3A] rounded-[2.5rem] sm:rounded-[3rem] p-6 sm:p-12 text-white border-2 border-[#E2C16B]/40 shadow-[0_30px_80px_rgba(11,31,58,0.25)] relative overflow-hidden">
+        {/* Ambient Glow */}
+        <div className="absolute inset-0 opacity-[0.07] pointer-events-none" style={{ backgroundImage: `radial-gradient(#E2C16B 1px, transparent 1px)`, backgroundSize: '32px 32px' }} />
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-amber-400/15 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500" />
+
+        {/* Header */}
+        <div className="text-center mb-12 relative z-10">
+          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-widest mb-6 backdrop-blur-md">
+            <Sun size={15} /> Green Energy & Commercial Solar Financing
+          </div>
+          <h3 className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-4 drop-shadow-lg">
+            Commercial Solar Loan Schemes
+          </h3>
+          <p className="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-medium">
+            Commercial & Industrial Solar Financing Frameworks in Gujarat.
+          </p>
+        </div>
+
+        {/* Commercial & Industrial Solar (Business Loans) */}
+        <div className="relative z-10">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center border border-blue-500/30 shadow-md">
+              <Briefcase size={20} />
+            </div>
+            <div>
+              <h4 className="text-xl sm:text-2xl font-bold text-white">Commercial & Industrial Solar (Business Loans)</h4>
+              <p className="text-xs text-blue-300 font-bold">Active Framework: SIDBI Green Finance (STAR / ARISE Schemes)</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-[#0A1A30]/80 rounded-2xl p-6 border border-blue-500/30">
+              <span className="text-[10px] font-black text-blue-400 uppercase tracking-widest block mb-2">Concessional Credit Term Loans</span>
+              <p className="text-xl font-bold text-white mb-2">Low-Interest 5-to-7-Year Repayment</p>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Commercial rooftop solar plants unlock low-interest concessional term loans from SIDBI with extended 5-to-7-year repayment lifecycles without requiring heavy capital outlay.
+              </p>
+            </div>
+
+            <div className="bg-[#0A1A30]/80 rounded-2xl p-6 border border-emerald-500/30">
+              <span className="text-[10px] font-black text-emerald-400 uppercase tracking-widest block mb-2">Tax Savings & Depreciation</span>
+              <p className="text-3xl font-extrabold text-emerald-400 mb-1">40% <span className="text-xs text-slate-300 font-medium">Accelerated Depreciation</span></p>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Integrate rooftop solar into your industrial asset balance sheet to claim a massive <strong className="text-white">40% Accelerated Depreciation tax offset</strong> in the very first year!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="mt-10 pt-8 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left relative z-10">
+          <div>
+            <p className="font-display italic text-amber-300 font-bold text-xl">"Switch to Clean Solar Energy & Reduce Operating Costs"</p>
+            <p className="text-xs text-slate-300 mt-1">Mandani Associate assists with commercial solar loan processing.</p>
+          </div>
+          <button
+            onClick={() => goHomeAndScroll("contact")}
+            className="px-8 py-4 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-[#0B1F3A] font-black text-xs uppercase tracking-wider rounded-xl shadow-2xl transition-all active:scale-95 whitespace-nowrap"
+          >
+            Apply Commercial Solar Loan
+          </button>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+function SubsidySection({ startApplication, goHomeAndScroll }) {
+  return (
+    <section id="subsidy" className="py-20 bg-slate-50/80 relative overflow-hidden border-y border-slate-100">
+      <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#0B1F3A]/5 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 relative z-10">
+        <div className="flex flex-col items-center text-center mb-12">
+          <span className="inline-block px-4 py-1.5 rounded-full text-[11px] font-bold tracking-[0.2em] text-amber-600 bg-amber-50 uppercase mb-3 border border-amber-200/50">
+            Government Schemes & Benefits
+          </span>
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 max-w-3xl leading-[1.15]" style={{ color: NAVY }}>
+            Maximize Your Savings with <span className="text-amber-600">Govt. Loan Subsidies</span>
+          </h2>
+          <p className="text-slate-500 text-base sm:text-lg max-w-2xl leading-relaxed">
+            Our expert consultants in Surat guide you through official subsidy applications, ensuring you claim maximum government benefits & interest rebates.
+          </p>
+          <div className="h-1.5 w-16 bg-amber-500 rounded-full mt-4" />
+        </div>
+
+        {/* Industrial Policy 2026 Section */}
+        <ViksitGujaratPolicySection goHomeAndScroll={goHomeAndScroll} />
+
+        {/* Solar Energy Subsidy Section */}
+        <SolarLoanSubsidySection goHomeAndScroll={goHomeAndScroll} />
+
+        {/* Free Consultation CTA Banner */}
+        <div className="bg-gradient-to-r from-[#0B1F3A] to-[#122A4D] rounded-[2.5rem] p-8 sm:p-12 text-white shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8 border border-white/10 mt-12">
+          <div className="text-center md:text-left max-w-xl">
+            <span className="text-amber-400 text-xs font-bold uppercase tracking-widest block mb-2">100% Free Subsidy Guidance</span>
+            <h3 className="font-display text-2xl sm:text-3xl font-bold mb-2">Need help claiming government loan subsidies?</h3>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              Talk to our Gujarat loan & subsidy specialists to review your eligibility and documentation before applying.
+            </p>
+          </div>
+          <button
+            onClick={() => goHomeAndScroll("contact")}
+            className="px-8 py-4 bg-[#E2C16B] text-[#0B1F3A] rounded-2xl font-bold text-sm hover:bg-white transition-all shadow-xl whitespace-nowrap flex items-center gap-2 active:scale-95"
+          >
+            Claim Your Subsidy Benefits <ArrowRight size={18} />
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SubsidyView({ navTo, startApplication, goHomeAndScroll }) {
+  return (
+    <div className="bg-white">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden py-24 lg:py-36 bg-[#0B1F3A]">
+        <div className="absolute inset-0 z-0">
+          <img
+            src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1600&q=80"
+            alt="Subsidy Background"
+            className="w-full h-full object-cover"
+            style={{ opacity: 0.9 }}
+          />
+          <div className="absolute inset-0 bg-[#0B1F3A]/40" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0B1F3A]/80 via-transparent to-[#0B1F3A]/80" />
+        </div>
+
+        <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
+          <div className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-white/5 backdrop-blur-md border border-white/50 transition-all hover:bg-white/45">
+            <button onClick={() => navTo("home")} className="text-[11px] font-bold text-white hover:text-white transition-colors uppercase tracking-widest">Home</button>
+            <span className="text-[11px] font-bold text-white/50">/</span>
+            <span className="text-[11px] font-bold text-amber-400 uppercase tracking-widest">Govt. Subsidies</span>
+          </div>
+
+          <h1 className="font-display text-white text-5xl sm:text-7xl font-bold mb-8 leading-tight">
+            Government Loan Subsidies
+          </h1>
+
+          <p className="text-white text-lg sm:text-xl max-w-3xl mx-auto mb-12 leading-relaxed font-medium">
+            Maximize your savings with official government subsidy schemes in Surat & Gujarat — PMAY, MSME Capital Subsidy, PMEGP & Interest Rebates.
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-5">
+            <PrimaryButton onClick={() => goHomeAndScroll("contact")} className="!px-10 !py-3 shadow-xl shadow-amber-500/20">
+              Check Subsidy Eligibility
+            </PrimaryButton>
+            <button
+              onClick={() => goHomeAndScroll("contact")}
+              className="inline-flex items-center gap-2 px-10 py-3 rounded-xl font-bold border-2 border-white/50 text-white hover:bg-white/5 transition-all active:scale-95"
+            >
+              Consult an Expert
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Main Subsidy Content */}
+      <SubsidySection startApplication={startApplication} goHomeAndScroll={goHomeAndScroll} />
+    </div>
   );
 }
 
@@ -2382,6 +2877,7 @@ function ContactSection() {
                 </div>
                 <div className="flex gap-2">
                   <a href="tel:+919979043073" className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm text-blue-600 hover:scale-110 transition-transform border border-slate-100"><Phone size={16} /></a>
+                  <a href="https://www.facebook.com/share/1DNBYgpQWb/" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm text-[#1877F2] hover:scale-110 transition-transform border border-slate-100"><Facebook size={16} fill="currentColor" /></a>
                   <a href="https://www.instagram.com/mandani_associate/" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm text-pink-600 hover:scale-110 transition-transform border border-slate-100"><Instagram size={16} /></a>
                   <a href="https://wa.me/919979043073" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm text-green-600 hover:scale-110 transition-transform border border-slate-100"><MessageCircle size={16} fill="currentColor" /></a>
                 </div>
@@ -2744,14 +3240,14 @@ function EMICalculatorView({ navTo, startApplication, goHomeAndScroll }) {
         </section>
 
         {/* Main Content */}
-        <section className="max-w-[1400px] mx-auto px-6 lg:px-10 py-20 -mt-16 relative z-20">
+        <section className="max-w-[1400px] mx-auto px-6 lg:px-10 py-12 -mt-8 relative z-20">
           {/* Floating Actions Menu */}
           <div className="fixed right-4 top-[45%] -translate-y-1/2 z-[60] flex flex-col gap-2">
             <button
               onClick={() => window.print()}
-              className="w-11 h-11 rounded-xl bg-[#0B1F3A] text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all group relative"
+              className="w-8 h-8 rounded-lg bg-[#0B1F3A] text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all group relative"
             >
-              <FileText size={20} />
+              <FileText size={16} />
               <div className="absolute right-full mr-3 px-2 py-1 rounded-md bg-[#0B1F3A] text-white text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none uppercase tracking-widest">
                 Download PDF
               </div>
@@ -2761,9 +3257,9 @@ function EMICalculatorView({ navTo, startApplication, goHomeAndScroll }) {
                 const el = document.getElementById("repayment-table");
                 if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
               }}
-              className="w-11 h-11 rounded-xl bg-[#0B1F3A] text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all group relative"
+              className="w-8 h-8 rounded-lg bg-[#0B1F3A] text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all group relative"
             >
-              <BarChart3 size={20} />
+              <BarChart3 size={16} />
               <div className="absolute right-full mr-3 px-2 py-1 rounded-md bg-[#0B1F3A] text-white text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none uppercase tracking-widest">
                 Summary Table
               </div>
@@ -2773,145 +3269,205 @@ function EMICalculatorView({ navTo, startApplication, goHomeAndScroll }) {
           <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 mb-24">
             {/* Calculator Card */}
             <ScrollReveal direction="left">
-            <div className="bg-white/55 backdrop-blur-xl rounded-[2.5rem] border-2 border-slate-200/60 shadow-[0_40px_80px_-20px_rgba(11,31,58,0.12)] p-8 sm:p-12">
-              <div className="flex flex-col gap-10">
+            <div className="bg-white rounded-[2rem] border-2 border-slate-100 shadow-[0_40px_80px_-20px_rgba(11,31,58,0.12)] p-6 sm:p-10 h-full flex flex-col justify-between">
+              <div className="space-y-8">
                 <SliderRow label="Loan Amount" value={amt} setValue={setAmt} min={50000} max={100000000} step={50000} format={fmtINR} />
 
-                <div className="grid sm:grid-cols-2 gap-10">
+                <div className="grid sm:grid-cols-2 gap-12">
                    <SliderRow label="Interest Rate (per annum)" value={rate} setValue={setRate} min={5} max={24} step={0.1} format={v => v.toFixed(1) + "%"} />
                    <div className="flex flex-col">
-                      <div className="flex items-center justify-between mb-2">
-                         <span className="text-sm font-semibold" style={{ color: "#0B1F3A" }}>Schedule Start Month</span>
+                      <div className="flex items-center justify-between mb-4">
+                         <span className="text-sm sm:text-base font-bold text-slate-700">Schedule Start Month</span>
                       </div>
-                      <input
-                        type="month"
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
-                        className="w-full h-[46px] px-4 rounded-xl border border-slate-200 font-medium text-slate-600 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
-                      />
+                      <div className="relative group">
+                        <input
+                          type="month"
+                          value={startDate}
+                          onChange={(e) => setStartDate(e.target.value)}
+                          className="w-full h-[46px] px-5 rounded-xl border border-slate-100 bg-slate-50/50 font-black text-slate-600 outline-none focus:ring-4 focus:ring-amber-500/10 transition-all appearance-none"
+                        />
+                        <div className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none group-focus-within:text-amber-500 transition-colors">
+                          <Clock size={18} />
+                        </div>
+                      </div>
                    </div>
                 </div>
 
                 <SliderRow label="Loan Tenure" value={years} setValue={setYears} min={1} max={30} step={1} format={v => v + " years"} />
               </div>
 
-              <div className="grid sm:grid-cols-3 gap-6 mt-12">
-                <StatBox label="Monthly EMI" value={fmtINR(emi)} highlight />
-                <StatBox label="Total Interest" value={fmtINR(totalInterest)} />
-                <StatBox label="Total Payable" value={fmtINR(totalPayment)} />
+              {/* Calculation Summary at Lower Side of Calculator */}
+              <div className="mt-8 p-5 rounded-2xl bg-gradient-to-r from-[#0B1F3A] to-[#122A4D] text-white shadow-xl border border-white/10">
+                <div className="grid grid-cols-3 gap-2 divide-x divide-white/10 text-center">
+                  <div className="px-1">
+                    <p className="text-[10px] font-black text-amber-400 uppercase tracking-widest mb-1">Monthly EMI</p>
+                    <p className="font-display text-base sm:text-2xl font-extrabold text-white tracking-tight">{fmtINR(emi)}</p>
+                  </div>
+                  <div className="px-1">
+                    <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-1">Total Interest</p>
+                    <p className="font-display text-sm sm:text-lg font-bold text-amber-300 tracking-tight">{fmtINR(totalInterest)}</p>
+                  </div>
+                  <div className="px-1">
+                    <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-1">Total Payable</p>
+                    <p className="font-display text-sm sm:text-lg font-bold text-white tracking-tight">{fmtINR(totalPayment)}</p>
+                  </div>
+                </div>
               </div>
 
-              <div className="mt-12 flex flex-col gap-6">
-                <PrimaryButton full className="!py-4 !text-lg !rounded-2xl" onClick={() => startApplication("EMI Calculator")}>
+              <div className="mt-8 flex justify-center">
+                <PrimaryButton className="!py-4 !px-10 !text-base !rounded-2xl shadow-xl shadow-amber-500/20 active:scale-[0.98] transition-transform" onClick={() => startApplication("EMI Calculator")}>
                   Apply for This Loan Now
                 </PrimaryButton>
-                <DisclaimerNote compact>
-                  This calculator gives an indicative estimate. Actual EMI, interest rate, and charges depend on the lender's final assessment.
-                </DisclaimerNote>
               </div>
             </div>
             </ScrollReveal>
 
             {/* Analysis Card */}
             <ScrollReveal direction="right">
-            <div className="bg-slate-50/80 backdrop-blur-xl rounded-[2.5rem] border-2 border-slate-200/60 p-8 sm:p-12 flex flex-col items-center h-fit sticky top-24">
-              <div className="w-full text-center mb-10">
-                <h3 className="text-2xl font-bold text-[#0B1F3A] mb-2">Analysis Breakdown</h3>
-                <p className="text-sm text-slate-500 font-medium">Principal vs Interest Component</p>
+            <div className="bg-white rounded-[2rem] border-2 border-slate-100 shadow-[0_40px_80px_-20px_rgba(11,31,58,0.08)] p-6 sm:p-10 flex flex-col items-center h-full relative group">
+
+              <div className="w-full text-center mb-8">
+                <h3 className="text-2xl font-display font-bold text-[#0B1F3A] mb-2">Analysis Breakdown</h3>
+                <p className="text-sm text-slate-400 font-bold uppercase tracking-widest">Principal vs Interest Component</p>
               </div>
 
-              <div className="flex-1 w-full flex items-center justify-center min-h-[320px]">
-                <ResponsiveContainer width="100%" height={320}>
-                  <PieChart>
-                    <Pie data={data} dataKey="value" nameKey="name" innerRadius={80} outerRadius={130} paddingAngle={4}>
-                      <Cell fill="#0B1F3A" stroke="none" />
-                      <Cell fill="#E2C16B" stroke="none" />
+              <div className="flex-1 w-full flex items-center justify-center min-h-[300px]">
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart style={{ outline: 'none' }}>
+                    <Pie
+                      data={data}
+                      dataKey="value"
+                      nameKey="name"
+                      innerRadius={80}
+                      outerRadius={120}
+                      paddingAngle={8}
+                      stroke="none"
+                      activeShape={false}
+                      isAnimationActive={true}
+                    >
+                      <Cell fill="#0B1F3A" stroke="none" className="hover:opacity-80 transition-opacity cursor-pointer outline-none" />
+                      <Cell fill="#E2C16B" stroke="none" className="hover:opacity-80 transition-opacity cursor-pointer outline-none" />
                     </Pie>
-                    <RTooltip formatter={v => fmtINR(v)} />
+                    <RTooltip
+                      contentStyle={{ borderRadius: '1rem', border: 'none', boxShadow: '0 20px 40px rgba(0,0,0,0.1)', fontWeight: 'bold', outline: 'none' }}
+                      itemStyle={{ outline: 'none' }}
+                      formatter={v => fmtINR(v)}
+                    />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
 
-              <div className="w-full grid grid-cols-2 gap-4 mt-10">
-                <div className="flex items-center gap-3 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
-                  <div className="w-4 h-4 rounded-full bg-[#0B1F3A]" />
-                  <div>
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Principal</p>
-                    <p className="text-sm font-bold text-slate-900">{((amt / totalPayment) * 100).toFixed(1)}%</p>
+              <div className="w-full grid grid-cols-2 gap-5 mt-12">
+                <div className="p-6 bg-slate-50/50 rounded-2xl border border-slate-100 text-center hover:bg-white hover:shadow-xl transition-all duration-300">
+                  <div className="inline-flex items-center gap-2 mb-2">
+                    <div className="w-3 h-3 rounded-full bg-[#0B1F3A]" />
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Principal</span>
                   </div>
+                  <p className="text-xl font-bold text-[#0B1F3A]">{((amt / totalPayment) * 100).toFixed(1)}%</p>
                 </div>
-                <div className="flex items-center gap-3 p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
-                  <div className="w-4 h-4 rounded-full bg-[#E2C16B]" />
-                  <div>
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Interest</p>
-                    <p className="text-sm font-bold text-slate-900">{((totalInterest / totalPayment) * 100).toFixed(1)}%</p>
+                <div className="p-6 bg-slate-50/50 rounded-2xl border border-slate-100 text-center hover:bg-white hover:shadow-xl transition-all duration-300">
+                  <div className="inline-flex items-center gap-2 mb-2">
+                    <div className="w-3 h-3 rounded-full bg-[#E2C16B]" />
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Interest</span>
                   </div>
+                  <p className="text-xl font-bold text-amber-600">{((totalInterest / totalPayment) * 100).toFixed(1)}%</p>
                 </div>
               </div>
             </div>
             </ScrollReveal>
           </div>
 
-          {/* Repayment Schedule Section (Accordion) */}
-          <div id="monthly-schedule" className="mb-24 p-6 sm:p-10 bg-white/40 rounded-[2.5rem] border-2 border-slate-200 shadow-inner">
+          {/* Stats Bar */}
+          <ScrollReveal direction="up" delay={0.2}>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-24">
+              <StatBox label="Monthly EMI" value={fmtINR(emi)} highlight />
+              <StatBox label="Total Interest" value={fmtINR(totalInterest)} />
+              <StatBox label="Total Payable" value={fmtINR(totalPayment)} />
+            </div>
+          </ScrollReveal>
+
+          {/* Repayment Schedule Section (Month-Wise Accordion) */}
+          <div id="monthly-schedule" className="mb-24 p-6 sm:p-10 bg-white rounded-[2.5rem] border-2 border-slate-100 shadow-2xl">
             <div className="text-center mb-12">
-               <h2 className="text-3xl font-bold text-[#0B1F3A] mb-3">Repayment Deduction</h2>
-               <p className="text-slate-500 max-w-lg mx-auto">Tap a year to view detailed month-by-month breakdown of your principal and interest components.</p>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 text-amber-600 text-xs font-bold uppercase tracking-widest mb-3">
+                <Clock size={14} /> Schedule Breakdown
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-display font-bold text-[#0B1F3A] mb-3">Month-Wise Repayment Schedule</h2>
+              <p className="text-slate-500 max-w-xl mx-auto text-sm sm:text-base">
+                Click on any year to view the detailed month-by-month breakdown of principal and interest deductions.
+              </p>
             </div>
 
-            <div className="space-y-6">
-              {fullSchedule.map((yearData) => (
-                <div
-                  key={yearData.year}
-                  className="bg-white rounded-[2rem] border-2 border-slate-100 shadow-2xl shadow-slate-300/50 overflow-hidden hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] hover:border-amber-500/40 transition-all duration-300 group"
-                >
-                  <button
-                    onClick={() => setExpandedYear(expandedYear === yearData.year ? null : yearData.year)}
-                    className="w-full flex items-center justify-between p-6 sm:p-9 hover:bg-slate-50/50 transition-colors"
+            <div className="space-y-4">
+              {fullSchedule.map((yearData) => {
+                const isExpanded = expandedYear === yearData.year;
+                return (
+                  <div
+                    key={yearData.year}
+                    className="bg-slate-50/70 rounded-2xl border border-slate-200/80 overflow-hidden transition-all duration-300"
                   >
-                    <div className="text-left">
-                      <h3 className="text-xl font-bold text-[#0B1F3A] mb-1 group-hover:text-amber-700 transition-colors">{yearData.year}</h3>
-                      <div className="flex items-center gap-3">
-                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{yearData.months.length} months</span>
-                        <span className="w-1 h-1 rounded-full bg-slate-200" />
-                        <span className="text-xs font-bold text-amber-600">{fmtINR(yearData.yearlyTotal)} Total</span>
+                    <button
+                      onClick={() => setExpandedYear(isExpanded ? null : yearData.year)}
+                      className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 sm:p-7 bg-white hover:bg-slate-50 transition-colors gap-4 text-left"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-[#0B1F3A] text-[#E2C16B] font-display font-bold text-lg flex items-center justify-center shadow-md">
+                          {yearData.year}
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-lg text-[#0B1F3A]">Year {yearData.year}</h3>
+                          <p className="text-xs text-slate-400 font-medium">{yearData.months.length} Monthly Installments</p>
+                        </div>
                       </div>
-                    </div>
-                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500 ${expandedYear === yearData.year ? 'bg-[#0B1F3A] text-white shadow-lg' : 'bg-slate-50 text-slate-400 border border-slate-100'}`}>
-                       <ChevronDown size={20} className={`transition-transform duration-500 ${expandedYear === yearData.year ? 'rotate-180' : ''}`} />
-                    </div>
-                  </button>
 
-                  {expandedYear === yearData.year && (
-                    <div className="px-6 sm:px-8 pb-8 animate-fade-down">
-                      <div className="overflow-x-auto">
-                        <table className="w-full border-separate border-spacing-y-2">
+                      <div className="flex flex-wrap items-center gap-6 sm:gap-8 w-full sm:w-auto justify-between sm:justify-end border-t sm:border-t-0 pt-3 sm:pt-0 border-slate-100">
+                        <div className="text-left sm:text-right">
+                          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Principal</p>
+                          <p className="text-sm font-bold text-slate-800">{fmtINR(yearData.yearlyPrincipal)}</p>
+                        </div>
+                        <div className="text-left sm:text-right">
+                          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Interest</p>
+                          <p className="text-sm font-bold text-amber-600">{fmtINR(yearData.yearlyInterest)}</p>
+                        </div>
+                        <div className="text-left sm:text-right">
+                          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Balance</p>
+                          <p className="text-sm font-bold text-[#0B1F3A]">{fmtINR(yearData.remainingBalance)}</p>
+                        </div>
+                        <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 transition-transform">
+                          {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                        </div>
+                      </div>
+                    </button>
+
+                    {isExpanded && (
+                      <div className="p-4 sm:p-6 bg-slate-50 border-t border-slate-200/80 overflow-x-auto">
+                        <table className="w-full text-xs sm:text-sm text-left border-collapse min-w-[600px]">
                           <thead>
-                            <tr className="text-[#0B1F3A]">
-                              <th className="px-4 py-2 text-left text-[10px] font-black uppercase tracking-[0.2em] opacity-50">Month</th>
-                              <th className="px-4 py-2 text-right text-[10px] font-black uppercase tracking-[0.2em] opacity-50">EMI</th>
-                              <th className="px-4 py-2 text-right text-[10px] font-black uppercase tracking-[0.2em] opacity-50">Principal</th>
-                              <th className="px-4 py-2 text-right text-[10px] font-black uppercase tracking-[0.2em] opacity-50">Interest</th>
-                              <th className="px-4 py-2 text-right text-[10px] font-black uppercase tracking-[0.2em] opacity-50">Balance</th>
+                            <tr className="border-b border-slate-200 text-slate-400 font-black uppercase tracking-wider text-[10px]">
+                              <th className="py-3 px-4">Month</th>
+                              <th className="py-3 px-4 text-right">EMI Paid</th>
+                              <th className="py-3 px-4 text-right">Principal</th>
+                              <th className="py-3 px-4 text-right">Interest</th>
+                              <th className="py-3 px-4 text-right">Remaining Balance</th>
                             </tr>
                           </thead>
-                          <tbody>
+                          <tbody className="divide-y divide-slate-200/60 font-medium text-slate-700">
                             {yearData.months.map((m, idx) => (
-                              <tr key={idx} className="bg-slate-50/50 rounded-xl">
-                                <td className="px-4 py-3 font-bold text-[#0B1F3A] text-sm rounded-l-xl">{m.month}</td>
-                                <td className="px-4 py-3 text-right text-slate-600 text-sm font-medium">{fmtINR(m.emi)}</td>
-                                <td className="px-4 py-3 text-right text-slate-600 text-sm font-medium">{fmtINR(m.principal)}</td>
-                                <td className="px-4 py-3 text-right text-slate-600 text-sm font-medium">{fmtINR(m.interest)}</td>
-                                <td className="px-4 py-3 text-right text-amber-600 text-sm font-bold rounded-r-xl">{fmtINR(m.balance)}</td>
+                              <tr key={idx} className="hover:bg-white transition-colors">
+                                <td className="py-3 px-4 font-bold text-[#0B1F3A]">{m.month}</td>
+                                <td className="py-3 px-4 text-right font-semibold text-slate-900">{fmtINR(m.emi)}</td>
+                                <td className="py-3 px-4 text-right text-emerald-600 font-bold">{fmtINR(m.principal)}</td>
+                                <td className="py-3 px-4 text-right text-amber-600 font-bold">{fmtINR(m.interest)}</td>
+                                <td className="py-3 px-4 text-right font-black text-[#0B1F3A]">{fmtINR(m.balance)}</td>
                               </tr>
                             ))}
                           </tbody>
                         </table>
                       </div>
-                    </div>
-                  )}
-                </div>
-              ))}
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -2953,18 +3509,60 @@ function EMICalculatorView({ navTo, startApplication, goHomeAndScroll }) {
 }
 
 function SliderRow({ label, value, setValue, min, max, step, format }) {
+  const sliderRef = useRef(null);
+
+  useEffect(() => {
+    const el = sliderRef.current;
+    if (!el) return;
+
+    const handleWheel = (e) => {
+      // If the mouse is over the slider, we prevent page scroll and adjust the value
+      if (Math.abs(e.deltaY) < 2) return;
+      e.preventDefault();
+
+      // Increased speed multiplier (5x) for faster adjustments
+      const speedMultiplier = 5;
+      const delta = e.deltaY > 0 ? -step * speedMultiplier : step * speedMultiplier;
+
+      setValue(prev => {
+        const newValue = Math.min(Math.max(prev + delta, min), max);
+        return newValue;
+      });
+    };
+
+    el.addEventListener('wheel', handleWheel, { passive: false });
+    return () => el.removeEventListener('wheel', handleWheel);
+  }, [min, max, step, setValue]);
+
   return (
-    <div className="mb-6">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-sm font-semibold" style={{ color: NAVY }}>{label}</span>
-        <input value={typeof value === "number" ? value : ""} onChange={e => {
-          const v = Number(e.target.value.replace(/[^\d.]/g, ""));
-          if (!isNaN(v)) setValue(v);
-        }} className="w-28 text-right text-sm font-semibold rounded-lg border border-slate-200 px-2 py-1" style={{ color: TEAL_DARK }} />
+    <div className="w-full">
+      <div className="flex items-center justify-between mb-4">
+        <span className="text-sm sm:text-base font-bold text-slate-800">{label}</span>
+        <input
+          type="text"
+          value={value}
+          onChange={e => {
+            const v = Number(e.target.value.replace(/[^\d.]/g, ""));
+            if (!isNaN(v)) setValue(v);
+          }}
+          className="w-28 sm:w-32 text-right text-sm sm:text-base font-black rounded-xl border-2 border-slate-200 bg-white px-4 py-2 text-amber-600 outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 transition-all opacity-100"
+        />
       </div>
-      <input type="range" min={min} max={max} step={step} value={value} onChange={e => setValue(Number(e.target.value))} className="w-full" />
-      <div className="flex justify-between text-[11px] text-slate-400 mt-1">
-        <span>{format(min)}</span><span>{format(max)}</span>
+      <div className="relative px-1">
+        <input
+          ref={sliderRef}
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={e => setValue(Number(e.target.value))}
+          className="w-full cursor-pointer"
+        />
+        <div className="flex justify-between text-[10px] font-black text-slate-500 mt-4 uppercase tracking-[0.15em]">
+          <span>{format(min)}</span>
+          <span>{format(max)}</span>
+        </div>
       </div>
     </div>
   );
@@ -2972,9 +3570,9 @@ function SliderRow({ label, value, setValue, min, max, step, format }) {
 
 function StatBox({ label, value, highlight }) {
   return (
-    <div className="rounded-xl p-4 text-center border-2 border-slate-200/60 shadow-md" style={{ backgroundColor: highlight ? NAVY : "rgba(255, 255, 255, 0.9)" }}>
-      <div className="text-[11px] mb-1 font-black uppercase tracking-wider" style={{ color: highlight ? "rgba(255,255,255,0.7)" : "#64748B" }}>{label}</div>
-      <div className="font-display text-lg font-bold" style={{ color: highlight ? "white" : NAVY }}>{value}</div>
+    <div className={`rounded-2xl p-5 text-center border-2 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 ${highlight ? 'bg-[#0B1F3A] border-[#0B1F3A]' : 'bg-white border-slate-100'}`}>
+      <div className={`text-[10px] mb-1.5 font-black uppercase tracking-[0.2em] ${highlight ? "text-amber-400" : "text-slate-400"}`}>{label}</div>
+      <div className={`font-display text-xl sm:text-2xl font-bold tracking-tight ${highlight ? "text-white" : "text-[#0B1F3A]"}`}>{value}</div>
     </div>
   );
 }
@@ -3471,7 +4069,55 @@ function AboutView({ navTo, goHomeAndScroll }) {
         </div>
       </section>
 
-      {/* Unique Mission & Image Section for About Us */}
+      {/* Main Detailed Content Section - Based on Screenshots */}
+      <section className="bg-[#FAF9F6] py-16 sm:py-24">
+        <div className="max-w-[1100px] mx-auto px-6 lg:px-10">
+          <ScrollReveal direction="up">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="h-px w-10 bg-amber-500" />
+              <span className="text-[10px] font-black tracking-[0.3em] uppercase text-amber-600">About Mandani Associate</span>
+            </div>
+            <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-[#0B1F3A] mb-10 sm:mb-16 leading-[1.15]">
+              Surat's Trusted Finance<br className="hidden sm:block" /> Loan Consultancy
+            </h2>
+          </ScrollReveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 lg:gap-x-20 gap-y-10">
+            <ScrollReveal direction="left" delay={0.1}>
+              <div className="space-y-6 sm:space-y-10 text-slate-500 text-sm sm:text-base leading-relaxed font-medium">
+                <p>
+                  Finance loan chahiye? Hum banaye ise aasan – that line is not a slogan, it is how we actually work. Every enquiry that reaches us gets the same treatment: we listen to what the money is for, read your papers honestly, and tell you plainly what is possible today and what is not. No jargon, no running around, no false hope.
+                </p>
+                <p>
+                  Mandani Associate is a finance and loan consultancy based in Surat, helping salaried families, shop owners, traders and factory owners across Gujarat arrange the right loan at the right interest rate. We are not a bank – we are your loan partner. One free eligibility check with us is compared across 30+ banks and NBFCs, so you see every offer available for your profile instead of accepting the first one you are shown.
+                </p>
+                <p>
+                  Most people in Surat lose money on a loan not because they were refused, but because they applied at the wrong lender. A home loan that costs 7% at one bank can cost 9.5% at another for the exact same applicant. Over a 20-year tenure that difference is lakhs of rupees. Our job is to read your income profile, CIBIL score and documents first, then place your file with the lender most likely to approve it at the lowest rate — before a single rejection touches your credit report.
+                </p>
+                <p>
+                  We handle the complete range of finance loan services in Surat: home loan, personal loan, car loan, business loan, loan against property, factory loan, machinery loan and term loan, along with balance transfer and top-up on your existing EMIs. Alongside loans we also provide money transfer, credit card assistance and bill payment services at our office, so one visit covers most of your everyday financial work.
+                </p>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal direction="right" delay={0.2}>
+              <div className="space-y-6 sm:space-y-10 text-slate-500 text-sm sm:text-base leading-relaxed font-medium">
+                <p>
+                  Everything starts with just two documents — your Aadhaar Card and PAN Card. Walk into our office in Varachha, Surat, or send them on WhatsApp, and your loan process begins within 15–20 minutes. There are no hidden charges, no file-opening surprises and no promises we cannot keep. If a loan is not right for you at this moment, we will tell you that honestly and explain exactly what to fix so it gets approved next time.
+                </p>
+                <p>
+                  A word on interest rates, because this is where most confusion starts. The rate you are quoted is not a fixed number printed on a board — it moves with your CIBIL score, your income stability, the tenure you pick and whether the loan is secured against property. Two people walking into the same bank on the same day can be offered rates two percent apart. Knowing which lender rewards which kind of profile is the whole job, and it is the reason a consultant who compares thirty options will usually beat a customer who applies at one.
+                </p>
+                <p>
+                  The other thing worth understanding is how repeated applications hurt you. Every time a bank pulls your credit report for a fresh loan enquiry, it leaves a hard mark. Four or five of those in a short span makes the next lender nervous, even if your income is perfectly good. This is why we check eligibility before anything is submitted anywhere. One well-placed application protects your score far better than five hopeful ones.
+                </p>
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Philosophy Section */}
       <section className="max-w-[1100px] mx-auto px-6 lg:px-10 py-20 relative">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <ScrollReveal direction="left">
@@ -4294,16 +4940,19 @@ function Footer({ navTo, goHomeAndScroll, setLegalType }) {
               { icon: Phone, href: "tel:+919979043073" },
               { icon: MessageCircle, href: "https://wa.me/919979043073" },
               { icon: Instagram, href: "https://www.instagram.com/mandani_associate/" },
-              { icon: Facebook, href: "#" }
+              { icon: Facebook, href: "https://www.facebook.com/share/1DNBYgpQWb/" }
             ].map((social, i) => (
-              <a key={i} href={social.href} className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-[#E2C16B] hover:text-[#0B1F3A] hover:border-[#E2C16B] transition-all duration-300">
+              <a key={i} href={social.href} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-[#E2C16B] hover:text-[#0B1F3A] hover:border-[#E2C16B] transition-all duration-300">
                 <social.icon size={18} fill={social.icon === Phone || social.icon === Instagram ? "none" : "currentColor"} />
               </a>
             ))}
           </div>
         </div>
 
-        <FooterCol title="Services" items={LOAN_CATEGORIES.map(c => c.name)} onClick={() => goHomeAndScroll("loans")} />
+        <FooterCol title="Services" items={[...LOAN_CATEGORIES.map(c => c.name), "Subsidy"]} onClick={(it) => {
+          if (it === "Subsidy") navTo("subsidy");
+          else goHomeAndScroll("loans");
+        }} />
 
         <FooterCol title="Company" items={["About Us", "Contact", "CIBIL", "Careers", "FAQs"]} onClick={(it) => {
           if (it === "About Us") navTo("about");
@@ -4454,19 +5103,19 @@ function LoanDetailsView({ loanId, navTo }) {
           </div>
         </div>
 
-        <div className="p-8 md:p-16 space-y-16 print:p-8 print:space-y-8">
+        <div className="p-8 md:p-16 space-y-16 print:p-8 print:space-y-4">
           {/* Documents Section */}
-          <div className="print:break-inside-avoid">
-            <div className="flex items-center gap-4 mb-10 print:mb-6">
+          <div>
+            <div className="flex items-center gap-4 mb-10 print:mb-4">
               <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-600 shadow-sm print:border print:border-amber-100">
                 <FileCheck size={24} />
               </div>
               <h3 className="text-2xl font-bold text-[#0B1F3A]">Required Documentation</h3>
             </div>
 
-            {loan.id === 'lap' ? (
-              <DocList title="Business Profile Requirements" items={homeBusiness} />
-            ) : ['home', 'machinery', 'business'].includes(loan.id) ? (
+            {['lap', 'machinery', 'business', 'personal'].includes(loan.id) ? (
+              <DocList items={loan.id === 'machinery' ? machineryDocs : homeBusiness} />
+            ) : loan.id === 'home' ? (
               <div className="grid md:grid-cols-2 gap-12 print:gap-8">
                 <DocList title="Salaried Profile" items={homeSalaried} />
                 <DocList title="Business Profile" items={homeBusiness} />
@@ -4481,8 +5130,8 @@ function LoanDetailsView({ loanId, navTo }) {
           </div>
 
           {/* Eligibility Section */}
-          <div className="pt-16 border-t border-slate-100 print:pt-8 print:break-inside-avoid">
-            <div className="flex items-center gap-4 mb-10 print:mb-6">
+          <div className="pt-16 border-t border-slate-100 print:pt-4">
+            <div className="flex items-center gap-4 mb-10 print:mb-4">
               <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 shadow-sm print:border print:border-blue-100">
                 <Shield size={24} />
               </div>
@@ -4490,7 +5139,7 @@ function LoanDetailsView({ loanId, navTo }) {
             </div>
             <div className="grid sm:grid-cols-2 gap-6 print:gap-3">
               {loan.eligibility.map((criteria, i) => (
-                <div key={i} className="flex items-center gap-5 p-5 rounded-[1.5rem] border-2 border-slate-50 bg-slate-50/30 hover:border-blue-100 transition-all print:p-3 print:border-none print:bg-white print:gap-3">
+                <div key={i} className="flex items-center gap-5 p-5 rounded-[1.5rem] border-2 border-slate-50 bg-slate-50/30 hover:border-blue-100 transition-all print:p-3 print:border-none print:bg-white print:gap-3 print:break-inside-avoid">
                   <div className="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)] print:shadow-none print:bg-slate-300" />
                   <span className="text-slate-700 font-bold print:text-sm">{criteria}</span>
                 </div>
@@ -4546,10 +5195,12 @@ function LoanDetailsView({ loanId, navTo }) {
 function DocList({ title, items }) {
   return (
     <div className="space-y-6 print:space-y-3">
-      <div className="flex items-center gap-3 mb-6 print:mb-4">
-         <div className="w-1.5 h-6 bg-amber-500 rounded-full print:w-1" />
-         <h4 className="text-sm font-black text-[#0B1F3A] uppercase tracking-widest">{title}</h4>
-      </div>
+      {title && (
+        <div className="flex items-center gap-3 mb-6 print:mb-4">
+           <div className="w-1.5 h-6 bg-amber-500 rounded-full print:w-1" />
+           <h4 className="text-sm font-black text-[#0B1F3A] uppercase tracking-widest">{title}</h4>
+        </div>
+      )}
       <ul className="space-y-3 print:space-y-1.5">
         {items.map((it, i) => (
           <DocItem key={i} text={it} index={i + 1} />
@@ -4561,7 +5212,7 @@ function DocList({ title, items }) {
 
 function DocItem({ text, index }) {
   return (
-    <li className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 group hover:bg-white hover:border-amber-200 transition-all print:bg-white print:p-1 print:border-none print:rounded-none">
+    <li className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 group hover:bg-white hover:border-amber-200 transition-all print:bg-white print:p-1 print:border-none print:rounded-none print:break-inside-avoid">
       <div className="mt-0.5 w-6 h-6 rounded-lg bg-[#0B1F3A] text-white flex items-center justify-center flex-shrink-0 text-[10px] font-bold shadow-lg print:shadow-none print:bg-slate-100 print:text-slate-900 print:w-5 print:h-5 print:rounded print:border print:border-slate-200">
         {index}
       </div>
