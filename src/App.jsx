@@ -5052,6 +5052,12 @@ function LoanDetailsView({ loanId, navTo }) {
     "Machine Quotation"
   ];
 
+  // CC / OD, Business & LAP Docs
+  const ccOdDocs = [
+    "Adhar Card", "Pan Card", "Udhyam Registration Certificate", "GST Registration & Returns", "12-Month Current/Business Bank Account Statement", "Rent Agreement or sale Deed",
+    "All current loan statements with sanction latter", "Current address light bill/vera bill"
+  ];
+
   // Home loan profiles
   const homeSalaried = [
     "Adhar Card", "Pan Card", "Form no 16 (for the last 2 years)", "12 month credited sallary statement",
@@ -5113,13 +5119,13 @@ function LoanDetailsView({ loanId, navTo }) {
               <h3 className="text-2xl font-bold text-[#0B1F3A]">Required Documentation</h3>
             </div>
 
-            {['lap', 'machinery', 'business', 'personal'].includes(loan.id) ? (
-              <DocList items={loan.id === 'machinery' ? machineryDocs : homeBusiness} />
-            ) : loan.id === 'home' ? (
+            {loan.id === 'home' || loan.id === 'lap' ? (
               <div className="grid md:grid-cols-2 gap-12 print:gap-8">
                 <DocList title="Salaried Profile" items={homeSalaried} />
                 <DocList title="Business Profile" items={homeBusiness} />
               </div>
+            ) : ['machinery', 'business', 'personal'].includes(loan.id) ? (
+              <DocList items={loan.id === 'machinery' ? machineryDocs : ccOdDocs} />
             ) : (
               <ul className="grid sm:grid-cols-2 gap-4 print:gap-2">
                 {defaultDocs.map((doc, i) => (
