@@ -1770,7 +1770,7 @@ function MiniSlider({ label, value, setValue, min, max, step, format }) {
 
 function ShipVideoGap() {
   return (
-    <section className="relative -mt-[1px] w-full h-[260px] sm:h-[340px] overflow-hidden">
+    <section className="relative z-30 -mt-[1px] w-full h-[260px] sm:h-[340px] overflow-hidden">
 
       {/* Ship Video */}
       <video
@@ -1799,7 +1799,6 @@ function ShipVideoGap() {
           <path d="M0,120V40C480,120 960,-40 1440,40V120Z"></path>
         </svg>
       </div>
-
     </section>
   );
 }
