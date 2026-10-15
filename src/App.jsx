@@ -631,7 +631,7 @@ function SmartChatBot() {
       ]
     },
     eligibility: {
-      text: "Great! To give you an estimate, what is your Monthly take-home salary?",
+      text: "Great! To give you an estimate, what is your monthly income?",
       options: [
         { label: "Below ₹25k", next: "low_income" },
         { label: "₹25k - ₹50k", next: "contact_form" },
@@ -1045,11 +1045,38 @@ function FloatingContactBar() {
 
 
 function TopStrip() {
+  const announcementText = "વિકસિત ગુજરાત ઉદ્યોગ નીતિ 2026 હેઠળ મશીનરી લોન મેળવો અને 35% સુધીની સબસિડી માટે માર્ગદર્શન મેળવવા આજે જ Mandani Associate નો સંપર્ક કરો";
+
   return (
-    <div className="hidden sm:flex items-center justify-end px-6 lg:px-10 py-2 text-xs text-white bg-black/20 backdrop-blur-sm">
-      <div className="flex items-center gap-5 opacity-90">
-        <span className="inline-flex items-center gap-1.5"><Phone size={12} /> +91 99790 43073, +91 6352243073</span>
-        <span className="inline-flex items-center gap-1.5"><Mail size={12} /> loan.mandaniassociate@gmail.com</span>
+    <div className="bg-[#0A1A30] border-b border-amber-500/20 text-xs text-white py-1.5 px-4 sm:px-8 flex items-center justify-between overflow-hidden shadow-lg backdrop-blur-md">
+      {/* Announcement Tag */}
+      <div className="flex items-center gap-2 flex-shrink-0 z-10 bg-[#0B1F3A] pr-3 border-r border-amber-500/30">
+        <span className="flex h-2 w-2 relative">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+        </span>
+        <span className="text-[11px] font-black tracking-wider uppercase text-[#E2C16B] whitespace-nowrap">
+          નવી ઉદ્યોગ નીતિ 2026
+        </span>
+      </div>
+
+      {/* Scrolling Announcement Marquee */}
+      <div className="flex-1 overflow-hidden mx-4 relative group cursor-pointer">
+        <div className="whitespace-nowrap animate-scroll inline-block font-bold text-amber-300 text-[11px] tracking-wide" style={{ animationDuration: '25s' }}>
+          <span className="mx-6">★ {announcementText}</span>
+          <span className="mx-6">★ {announcementText}</span>
+          <span className="mx-6">★ {announcementText}</span>
+        </div>
+      </div>
+
+      {/* Contact info on right */}
+      <div className="hidden lg:flex items-center gap-5 opacity-90 text-[11px] flex-shrink-0 z-10 bg-[#0B1F3A] pl-3 border-l border-amber-500/30 font-medium">
+        <a href="tel:+919979043073" className="inline-flex items-center gap-1.5 hover:text-amber-400 transition-colors">
+          <Phone size={12} className="text-amber-400" /> +91 99790 43073
+        </a>
+        <a href="mailto:loan.mandaniassociate@gmail.com" className="inline-flex items-center gap-1.5 hover:text-amber-400 transition-colors">
+          <Mail size={12} className="text-amber-400" /> loan.mandaniassociate@gmail.com
+        </a>
       </div>
     </div>
   );
@@ -1769,8 +1796,10 @@ function MiniSlider({ label, value, setValue, min, max, step, format }) {
 }
 
 function ShipVideoGap() {
+  const gapNoticeText = "₹25 લાખ કે તેથી વધુની હોમ, મશીનરી, મોર્ગેજ અને CC/OD લોન ઓછા વ્યાજદરે મેળવો તથા વિકસિત ગુજરાત ઉદ્યોગ નીતિ 2026 હેઠળ લાગુ પડતી સબસિડી માટે માર્ગદર્શન મેળવો – Mandani Associate નો આજે જ સંપર્ક કરો!";
+
   return (
-    <section className="relative z-30 -mt-[1px] w-full h-[260px] sm:h-[340px] overflow-hidden">
+    <section className="relative z-50 -mt-[1px] w-full h-[260px] sm:h-[340px] overflow-hidden">
 
       {/* Ship Video */}
       <video
@@ -1799,9 +1828,19 @@ function ShipVideoGap() {
           <path d="M0,120V40C480,120 960,-40 1440,40V120Z"></path>
         </svg>
       </div>
+
+      {/* Scrolling Gujarati Notice inside White Wave Ribbon Gap - Slightly Lower Position */}
+      <div className="absolute bottom-0 left-0 right-0 h-[40px] sm:h-[80px] flex items-end pb-1.5 sm:pb-2 translate-y-0.5 sm:translate-y-1.5 z-30 overflow-hidden pointer-events-auto">
+        <div className="whitespace-nowrap animate-scroll inline-block font-extrabold text-[#0B1F3A] text-xs sm:text-sm tracking-wide" style={{ animationDuration: '30s' }}>
+          <span className="mx-8 font-black">📢 {gapNoticeText}</span>
+          <span className="mx-8 font-black">📢 {gapNoticeText}</span>
+          <span className="mx-8 font-black">📢 {gapNoticeText}</span>
+        </div>
+      </div>
     </section>
   );
 }
+
 
 function Hero({ navTo, goHomeAndScroll }) {
   const [amt, setAmt] = useState(800000);
